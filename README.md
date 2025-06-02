@@ -49,7 +49,7 @@ Plan your train journey with an intelligent and instant interface. This native a
 
 ## 📦 Installation
 
-Download the latest release from the [**Releases**](https://github.com/your-username/your-repo/releases) section:
+Download the latest release from the [**Releases**](https://github.com/AhmedTrooper/RailwayMatrixBD/releases) section:
 
 | Platform      | Format     | Status       |
 |---------------|------------|--------------|
