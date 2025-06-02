@@ -1,0 +1,491 @@
+{
+  "data": {
+    "trains": [
+
+
+
+      {
+        "trip_number": "DHUMKETU EXPRESS (769)",
+        "departure_date_time": "09 Jun, 06:00 am",
+        "departure_full_date": "2025-06-09",
+        "departure_date_time_jd": "Mon, 09 Jun 2025, 06:00 AM",
+        "arrival_date_time": "09 Jun, 11:40 am",
+        "travel_time": "05h 40m",
+        "origin_city_name": "dhaka",
+        "destination_city_name": "rajshahi",
+        "seat_types": [
+
+
+          {
+            "key": 7,
+            "type": "S_CHAIR",
+            "trip_id": 8435694,
+            "trip_route_id": 53453625,
+            "route_id": 19499,
+            "fare": "450.00",
+            "vat_percent": 0,
+            "vat_amount": 0,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          },
+
+
+          {
+            "key": 3,
+            "type": "SNIGDHA",
+            "trip_id": 8435707,
+            "trip_route_id": 53454264,
+            "route_id": 19499,
+            "fare": "750.00",
+            "vat_percent": 15,
+            "vat_amount": 113,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 18,
+              "offline": 18,
+              "is_divided": true
+            }
+          },
+
+
+          {
+            "key": 2,
+            "type": "AC_S",
+            "trip_id": 8435720,
+            "trip_route_id": 53454912,
+            "route_id": 19499,
+            "fare": "900.00",
+            "vat_percent": 15,
+            "vat_amount": 135,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          }
+
+          
+        ],
+        "train_model": "769",
+        "is_open_for_all": true,
+        "is_eid_trip": 1,
+        "parent_route": {
+          "origin_city_name": "dhaka",
+          "destination_city_name": "rajshahi",
+          "departure_date": "2025-06-09",
+          "departure_time": "06:00:00",
+          "arrival_date": "2025-06-09",
+          "arrival_time": "11:40:00"
+        },
+        "boarding_points": [
+          {
+            "trip_point_id": 108255392,
+            "location_id": 2719,
+            "location_name": "Kamalapur Station",
+            "location_time": "06:00 AM",
+            "location_date": "09 Jun 2025"
+          }
+        ],
+        "is_international": 0,
+        "is_from_city_international": false
+      },
+
+
+
+
+
+
+
+
+
+
+      {
+        "trip_number": "BANALATA EXPRESS (791)",
+        "departure_date_time": "09 Jun, 01:30 pm",
+        "departure_full_date": "2025-06-09",
+        "departure_date_time_jd": "Mon, 09 Jun 2025, 01:30 PM",
+        "arrival_date_time": "09 Jun, 05:45 pm",
+        "travel_time": "04h 15m",
+        "origin_city_name": "dhaka",
+        "destination_city_name": "rajshahi",
+        "seat_types": [
+          {
+            "key": 7,
+            "type": "S_CHAIR",
+            "trip_id": 8436378,
+            "trip_route_id": 53490057,
+            "route_id": 19610,
+            "fare": "495.00",
+            "vat_percent": 0,
+            "vat_amount": 0,
+            "origin_city_seq": 1,
+            "destination_city_seq": 3,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          },
+          {
+            "key": 3,
+            "type": "SNIGDHA",
+            "trip_id": 8436391,
+            "trip_route_id": 53490122,
+            "route_id": 19610,
+            "fare": "825.00",
+            "vat_percent": 15,
+            "vat_amount": 124,
+            "origin_city_seq": 1,
+            "destination_city_seq": 3,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          },
+          {
+            "key": 2,
+            "type": "AC_S",
+            "trip_id": 8436404,
+            "trip_route_id": 53490187,
+            "route_id": 19610,
+            "fare": "990.00",
+            "vat_percent": 15,
+            "vat_amount": 149,
+            "origin_city_seq": 1,
+            "destination_city_seq": 3,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          }
+        ],
+        "train_model": "791",
+        "is_open_for_all": true,
+        "is_eid_trip": 1,
+        "parent_route": {
+          "origin_city_name": "dhaka",
+          "destination_city_name": "chapainawabganj",
+          "departure_date": "2025-06-09",
+          "departure_time": "13:30:00",
+          "arrival_date": "2025-06-09",
+          "arrival_time": "19:15:00"
+        },
+        "boarding_points": [
+          {
+            "trip_point_id": 108274899,
+            "location_id": 2719,
+            "location_name": "Kamalapur Station",
+            "location_time": "01:30 PM",
+            "location_date": "09 Jun 2025"
+          }
+        ],
+        "is_international": 0,
+        "is_from_city_international": false
+      },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {
+        "trip_number": "SILKCITY EXPRESS (753)",
+        "departure_date_time": "09 Jun, 02:30 pm",
+        "departure_full_date": "2025-06-09",
+        "departure_date_time_jd": "Mon, 09 Jun 2025, 02:30 PM",
+        "arrival_date_time": "09 Jun, 08:20 pm",
+        "travel_time": "05h 50m",
+        "origin_city_name": "dhaka",
+        "destination_city_name": "rajshahi",
+        "seat_types": [
+          {
+            "key": 2,
+            "type": "AC_S",
+            "trip_id": 8440111,
+            "trip_route_id": 53608049,
+            "route_id": 19499,
+            "fare": "900.00",
+            "vat_percent": 15,
+            "vat_amount": 135,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          },
+          {
+            "key": 3,
+            "type": "SNIGDHA",
+            "trip_id": 8440124,
+            "trip_route_id": 53608647,
+            "route_id": 19499,
+            "fare": "750.00",
+            "vat_percent": 15,
+            "vat_amount": 113,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 31,
+              "offline": 31,
+              "is_divided": true
+            }
+          },
+          {
+            "key": 7,
+            "type": "S_CHAIR",
+            "trip_id": 8440137,
+            "trip_route_id": 53609280,
+            "route_id": 19499,
+            "fare": "450.00",
+            "vat_percent": 0,
+            "vat_amount": 0,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          }
+        ],
+        "train_model": "753",
+        "is_open_for_all": true,
+        "is_eid_trip": 1,
+        "parent_route": {
+          "origin_city_name": "dhaka",
+          "destination_city_name": "rajshahi",
+          "departure_date": "2025-06-09",
+          "departure_time": "14:30:00",
+          "arrival_date": "2025-06-09",
+          "arrival_time": "20:20:00"
+        },
+        "boarding_points": [
+          {
+            "trip_point_id": 108344454,
+            "location_id": 2719,
+            "location_name": "Kamalapur Station",
+            "location_time": "02:30 PM",
+            "location_date": "09 Jun 2025"
+          }
+        ],
+        "is_international": 0,
+        "is_from_city_international": false
+      },
+
+
+
+
+
+
+
+      {
+        "trip_number": "MADHUMATI EXPRESS (755)",
+        "departure_date_time": "09 Jun, 03:00 pm",
+        "departure_full_date": "2025-06-09",
+        "departure_date_time_jd": "Mon, 09 Jun 2025, 03:00 PM",
+        "arrival_date_time": "09 Jun, 10:30 pm",
+        "travel_time": "07h 30m",
+        "origin_city_name": "dhaka",
+        "destination_city_name": "rajshahi",
+        "seat_types": [
+          {
+            "key": 7,
+            "type": "S_CHAIR",
+            "trip_id": 8439890,
+            "trip_route_id": 53601922,
+            "route_id": 25756,
+            "fare": "585.00",
+            "vat_percent": 0,
+            "vat_amount": 0,
+            "origin_city_seq": 1,
+            "destination_city_seq": 22,
+            "seat_counts": {
+              "online": 1,
+              "offline": 0,
+              "is_divided": true
+            }
+          },
+          {
+            "key": 2,
+            "type": "AC_S",
+            "trip_id": 8439903,
+            "trip_route_id": 53602539,
+            "route_id": 25756,
+            "fare": "1165.00",
+            "vat_percent": 15,
+            "vat_amount": 175,
+            "origin_city_seq": 1,
+            "destination_city_seq": 22,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          },
+          {
+            "key": 3,
+            "type": "SNIGDHA",
+            "trip_id": 8442581,
+            "trip_route_id": 53697861,
+            "route_id": 25756,
+            "fare": "970.00",
+            "vat_percent": 15,
+            "vat_amount": 146,
+            "origin_city_seq": 1,
+            "destination_city_seq": 22,
+            "seat_counts": {
+              "online": 39,
+              "offline": 39,
+              "is_divided": true
+            }
+          }
+        ],
+        "train_model": "755",
+        "is_open_for_all": true,
+        "is_eid_trip": 1,
+        "parent_route": {
+          "origin_city_name": "dhaka",
+          "destination_city_name": "rajshahi",
+          "departure_date": "2025-06-09",
+          "departure_time": "15:00:00",
+          "arrival_date": "2025-06-09",
+          "arrival_time": "22:30:00"
+        },
+        "boarding_points": [
+          {
+            "trip_point_id": 108340302,
+            "location_id": 2719,
+            "location_name": "Kamalapur Station",
+            "location_time": "03:00 PM",
+            "location_date": "09 Jun 2025"
+          }
+        ],
+        "is_international": 0,
+        "is_from_city_international": false
+      },
+
+
+
+
+
+
+
+
+      {
+        "trip_number": "PADMA EXPRESS (759)",
+        "departure_date_time": "09 Jun, 10:45 pm",
+        "departure_full_date": "2025-06-09",
+        "departure_date_time_jd": "Mon, 09 Jun 2025, 10:45 PM",
+        "arrival_date_time": "10 Jun, 04:00 am",
+        "travel_time": "05h 15m",
+        "origin_city_name": "dhaka",
+        "destination_city_name": "rajshahi",
+        "seat_types": [
+          {
+            "key": 1,
+            "type": "AC_B",
+            "trip_id": 8435772,
+            "trip_route_id": 53456389,
+            "route_id": 19499,
+            "fare": "1345.00",
+            "vat_percent": 15,
+            "vat_amount": 202,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 0,
+              "offline": 0,
+              "is_divided": true
+            }
+          },
+          {
+            "key": 3,
+            "type": "SNIGDHA",
+            "trip_id": 8435784,
+            "trip_route_id": 53456953,
+            "route_id": 19499,
+            "fare": "750.00",
+            "vat_percent": 15,
+            "vat_amount": 113,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 50,
+              "offline": 49,
+              "is_divided": true
+            }
+          },
+          {
+            "key": 7,
+            "type": "S_CHAIR",
+            "trip_id": 8435796,
+            "trip_route_id": 53457522,
+            "route_id": 19499,
+            "fare": "450.00",
+            "vat_percent": 0,
+            "vat_amount": 0,
+            "origin_city_seq": 1,
+            "destination_city_seq": 16,
+            "seat_counts": {
+              "online": 43,
+              "offline": 42,
+              "is_divided": true
+            }
+          }
+        ],
+        "train_model": "759",
+        "is_open_for_all": true,
+        "is_eid_trip": 1,
+        "parent_route": {
+          "origin_city_name": "dhaka",
+          "destination_city_name": "rajshahi",
+          "departure_date": "2025-06-09",
+          "departure_time": "22:45:00",
+          "arrival_date": "2025-06-10",
+          "arrival_time": "04:00:00"
+        },
+        "boarding_points": [
+          {
+            "trip_point_id": 108257015,
+            "location_id": 2719,
+            "location_name": "Kamalapur Station",
+            "location_time": "10:45 PM",
+            "location_date": "09 Jun 2025"
+          }
+        ],
+        "is_international": 0,
+        "is_from_city_international": false
+      }
+
+
+
+
+
+    ],
+    "recommendations": [],
+    "selected_seat_class": "SHULOV"
+  },
+  "extra": {
+    "hash": "1C30C101C4DAF4A4E3B713E5BF6177C0"
+  }
+}
