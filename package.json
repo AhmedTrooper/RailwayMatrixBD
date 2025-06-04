@@ -10,12 +10,15 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.2.5",
     "@tailwindcss/vite": "^4.1.8",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-http": "^2.4.4",
     "@tauri-apps/plugin-opener": "^2",
     "@tauri-apps/plugin-os": "^2.2.1",
     "clsx": "^2.1.1",
+    "lodash": "^4.17.21",
+    "loglevel": "^1.9.2",
     "lucide-react": "^0.511.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -24,6 +27,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",
+    "@types/lodash": "^4.17.17",
     "@types/node": "^22.15.29",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",

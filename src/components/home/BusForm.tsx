@@ -14,7 +14,13 @@ export default function BusForm() {
     selectedDate,
     setRouteData,
     setShouldFetch,
-    setTrainData
+    setTrainData,
+    setRouteListInfo,
+    routeData,
+    routeListInfo,
+    setIsMatrixCreated,
+    setTicketFound,
+    setNumberOfSeatsFound,
   } = useContext(DataContext);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +38,7 @@ export default function BusForm() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [routeData, routeListInfo]);
 
   const selectTrain = (tName: string) => {
     setSelectedTrainName(tName);
@@ -50,8 +56,14 @@ export default function BusForm() {
     train.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // function to find  route information
+
   async function getTickets(selectedModel: string, selectedDate: string) {
     try {
+      setRouteListInfo([]);
+      setIsMatrixCreated(false);
+      setTicketFound(false);
+      setNumberOfSeatsFound(0);
       const response = await fetch(
         "https://railspaapi.shohoz.com/v1.0/web/train-routes",
         {
@@ -66,7 +78,11 @@ export default function BusForm() {
         }
       );
 
-      if (response.status == 200) setRouteData(await response.json());
+      if (response.status == 200) {
+        const routeDataObject = await response.json();
+        setRouteData(routeDataObject);
+        setRouteListInfo(routeDataObject!.data!.routes);
+      }
     } catch (error) {
       console.error("Error fetching tickets:", error);
     }
