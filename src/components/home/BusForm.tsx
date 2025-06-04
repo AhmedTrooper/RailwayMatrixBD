@@ -148,14 +148,11 @@ export default function BusForm() {
                       }
                     `}
                     onClick={() => {
-
                       selectTrain(trainName);
-                        setRouteListInfo([]);
-      setIsMatrixCreated(false);
-      setTicketFound(false);
-      setNumberOfSeatsFound(0);
-
-
+                      setRouteListInfo([]);
+                      setIsMatrixCreated(false);
+                      setTicketFound(false);
+                      setNumberOfSeatsFound(0);
                     }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {

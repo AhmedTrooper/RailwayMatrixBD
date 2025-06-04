@@ -66,7 +66,13 @@ export default function MatrixBox() {
               );
               const seatType = train?.seat_types;
               if (seatType) {
-                if (!isEmpty(seatType)) {
+                if (dataMatrix[i][j] == null) {
+                  dataMatrix[i][j] = seatType;
+                  dataMatrix[j][i] = null;
+                  //counts seats for one direction only.....
+
+
+                   if (!isEmpty(seatType)) {
                   const seatAvailable = seatType.map((seat: any) => {
                     if (
                       seat.seat_counts["online"] + seat.seat_counts["offline"] >
@@ -77,13 +83,12 @@ export default function MatrixBox() {
                   });
                   if (seatAvailable) {
                     setTicketFound(true);
-                    setNumberOfSeatsFound((s: any) => s + 1);
+                    setNumberOfSeatsFound(()=>numberOfSeatsFound + 1);
                   }
                 }
 
-                if (dataMatrix[i][j] == null) {
-                  dataMatrix[i][j] = seatType;
-                  dataMatrix[j][i] = null;
+
+
                 }
               }
             })
@@ -127,7 +132,7 @@ export default function MatrixBox() {
         {isMatrixCreated && <DatePicker />}
 
         {isMatrixCreated && (
-          <p className="w-[60vw] justify-self-center text-[15px] mt-2">
+          <p className="w-[60vw] justify-self-center text-[15px] mt-2 mb-5">
             <span>
               <Info className=" text-green-600" />
             </span>
@@ -136,13 +141,13 @@ export default function MatrixBox() {
           </p>
         )}
 
-        {numberOfSeatsFound > 0 && (
+        {/* {numberOfSeatsFound > 0 && (
           <button className="bg-green-600 shadow-gray-500 shadow-md text-white w-fit px-4 py-2 mt-5 mb-10 justify-self-center self-center rounded hover:bg-green-700 cursor-pointer">
             Seat(s) found for{" "}
             <span className="text-xl font-bold">{numberOfSeatsFound}</span>{" "}
             destination
           </button>
-        )}
+        )} */}
 
         {loading && (
           <div className="mb-4 text-green-600 font-medium animate-pulse">

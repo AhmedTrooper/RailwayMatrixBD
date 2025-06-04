@@ -76,10 +76,10 @@ export default function RouteDetails() {
                       </div>
                       {(stop.departure_time || isLast) && (
                         <div>
-                          <span className="font-semibold">{isLast ? "Ending Point" : "Departure time:" }</span>{" "}
-                          {stop.departure_time ?? (
-                           null
-                          )}
+                          <span className="font-semibold">
+                            {isLast ? "Ending Point" : "Departure time:"}
+                          </span>{" "}
+                          {stop.departure_time ?? null}
                         </div>
                       )}
                       {stop.halt && stop.halt !== "---" && (

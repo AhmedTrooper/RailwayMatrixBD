@@ -9,7 +9,7 @@ export default function Footer() {
         rel="noopener noreferrer"
         className="font-bold"
       >
-        <FaGithub className="text-3xl text-green-600"/>
+        <FaGithub className="text-3xl text-green-600" />
       </a>
     </div>
   );

@@ -28,7 +28,7 @@ export default function App() {
   const [routeListInfo, setRouteListInfo] = useState([]);
   const [isMatrixCreated, setIsMatrixCreated] = useState(false);
   const [ticketFound, setTicketFound] = useState(false);
-  const [numberOfSeatsFound,setNumberOfSeatsFound] = useState(0);
+  const [numberOfSeatsFound, setNumberOfSeatsFound] = useState(0);
 
   useEffect(() => {
     if (currentOS === "android" || currentOS === "ios") setIsMobileOS(true);
@@ -62,7 +62,7 @@ export default function App() {
         ticketFound,
         setTicketFound,
         numberOfSeatsFound,
-        setNumberOfSeatsFound
+        setNumberOfSeatsFound,
       }}
     >
       <div className="grid w-full min-h-screen">

@@ -45,7 +45,10 @@ export default function MenuBar() {
           onClick={handleWindowClose}
           className="cursor-pointer w-5 text-white"
         />
-        <Minus onClick={hideWindow} className="cursor-pointer w-5 text-white" />
+        <Minus
+          onClick={hideWindow}
+          className="cursor-pointer w-5 text-white"
+        />
         <Maximize2
           onClick={handleFullScreen}
           className="cursor-pointer w-5 text-white"
