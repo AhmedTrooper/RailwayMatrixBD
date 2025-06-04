@@ -1,10 +1,16 @@
-
 import { Fragment, useContext, useEffect, useState } from "react";
 import { fetch } from "@tauri-apps/plugin-http";
 import { DataContext } from "../../context/DataContext";
+import clsx from "clsx";
 
 export default function MatrixBox() {
-  const { routeList, formatedDate, selectedTrainName,trainData, setTrainData } = useContext(DataContext);
+  const {
+    routeList,
+    formatedDate,
+    selectedTrainName,
+    trainData,
+    setTrainData,
+  } = useContext(DataContext);
   const [loading, setLoading] = useState(false);
   const [elapsed, setElapsed] = useState(0);
 
@@ -39,15 +45,16 @@ export default function MatrixBox() {
             .then((res) => res.json())
             .then((jsonData) => {
               const trainList = jsonData?.data?.trains || [];
-              const train = trainList.find((t: any) => t?.trip_number === selectedTrainName);
+              const train = trainList.find(
+                (t: any) => t?.trip_number === selectedTrainName
+              );
               const seatType = train?.seat_types;
               if (seatType) {
                 // dataMatrix[i][j] = seatType;
                 // dataMatrix[j][i] = seatType;
-                if(dataMatrix[i][j] ==null){
-                    dataMatrix[i][j] = seatType;
-                dataMatrix[j][i] = null;
-
+                if (dataMatrix[i][j] == null) {
+                  dataMatrix[i][j] = seatType;
+                  dataMatrix[j][i] = null;
                 }
               }
             })
@@ -70,23 +77,23 @@ export default function MatrixBox() {
 
   return (
     <Fragment>
-      <div className="p-4 bg-gray-50 max-w-[95vw] max-h-[90vh] grid overflow-auto">
+      <div className="p-4 bg-white max-w-[95vw]  grid  rounded shadow-gray-500 shadow-sm">
         <button
           onClick={createMatrix}
-          className="bg-blue-600 text-white w-fit px-4 py-2 mb-4 justify-self-center self-center rounded hover:bg-blue-700 cursor-pointer"
+          className=" bg-green-600 shadow-gray-500 shadow-md text-white w-fit px-4 py-2 mb-10 mt-10 justify-self-center self-center rounded hover:bg-green-700 cursor-pointer"
         >
           Create Matrix
         </button>
 
         {loading && (
-          <div className="mb-4 text-blue-600 font-medium animate-pulse">
-            Loading data... ⏳ {elapsed}s elapsed
+          <div className="mb-4 text-green-600 font-medium animate-pulse">
+            Creating matrix... ⏳ {elapsed}s elapsed
           </div>
         )}
 
         {trainData && trainData.length > 0 ? (
           <div
-            className="border rounded bg-white shadow"
+            className="p-3 rounded shadow-sm shadow-gray-500"
             style={{
               width: "100%",
               height: "80vh",
@@ -96,58 +103,92 @@ export default function MatrixBox() {
             }}
           >
             <div
-              className="grid"
+              className="grid shadow-sm shadow-gray-500 p-2"
               style={{
-                gridTemplateColumns: `repeat(${routeList.length + 1}, minmax(100px, 1fr))`,
+                gridTemplateColumns: `repeat(${
+                  routeList.length + 1
+                }, minmax(100px, 1fr))`,
                 width: "max-content",
               }}
             >
-              <div className="sticky top-0 left-0 bg-gray-200 border border-gray-300 z-30 h-12 w-full" />
+              <div className="sticky border border-white bg-green-600  top-0 left-0 grid content-center text-white justify-items-center z-30 h-12 w-full font-bold" >From/To</div>
 
               {routeList.map((city: any, idx: number) => (
                 <div
                   key={`head-${idx}`}
-                  className="sticky top-0 z-20 bg-gray-200 border border-gray-300 text-center text-xs font-semibold p-1 truncate"
+                  className={clsx(
+                    "sticky top-0 z-20 font-bold  border border-white text-center text-white text-xs  p-1 truncate grid content-center",
+                    {
+                      "bg-amber-500":idx%2===0,
+                        "bg-green-600":idx%2===1
+                    }
+                  )}
                   title={city}
                 >
                   {city.replace(/_/g, " ")}
                 </div>
               ))}
 
-              {trainData.map((row:any, i:any) => (
+              {trainData.map((row: any, i: any) => (
                 <Fragment key={i}>
                   <div
-                    className="sticky left-0 z-10 bg-orange-600 text-white border border-gray-300 text-center text-xs font-semibold p-1 truncate"
+                    className={
+                      clsx(
+                        "sticky left-0 z-10  grid content-center font-bold text-white border border-gray-300 text-center text-xs  p-1 truncate",
+                        {
+                          "bg-amber-500":i%2===0,
+                          "bg-green-600":i%2===1
+                        }
+                      )
+                    }
                     style={{ gridColumn: "1 / 2" }}
                     title={routeList[i]}
                   >
                     {routeList[i].replace(/_/g, " ")}
                   </div>
 
-                  {row.map((cell:any, j:number) => (
+                  {row.map((cell: any, j: number) => (
                     <div
                       key={j}
-                      className="border border-gray-200 p-1 flex flex-col items-center justify-center text-xs min-h-[100px] max-w-full"
+                      className={clsx(
+                        " p-3 gap-1.5 flex flex-col content-center items-center justify-center text-xs min-h-[100px] max-w-full",
+                        {
+                         "border border-white":true,
+                         "bg-green-300":j%2===1,
+                         "bg-amber-300":j%2===0
+                        }
+                      )}
                     >
                       {cell ? (
                         cell.map((item: any, k: number) => {
-                          const total = item.seat_counts.online + item.seat_counts.offline;
+                          const total =
+                            item.seat_counts.online + item.seat_counts.offline;
                           if (total <= 0) return null;
                           return (
                             <div
                               key={k}
-                              className="bg-white border border-gray-300 rounded px-2 py-1 text-[10px] text-center w-full"
+                              className={clsx(
+                                "bg-white border border-white rounded px-2 py-1 text-[10px] text-center w-full",
+                                
+                              )}
                             >
-                              <div className="font-semibold text-green-600 truncate" title={item.type}>
+                              <div
+                                className="font-semibold text-green-600 truncate"
+                                title={item.type}
+                              >
                                 {item.type}
                               </div>
-                              <div className="text-gray-700">{Number(item.fare) + item.vat_amount} TK</div>
-                              <div className="text-blue-700 font-medium">{total} tickets</div>
+                              <div className="text-gray-700 font-semibold">
+                                {Number(item.fare) + item.vat_amount} TK
+                              </div>
+                              <div className="text-green-700 font-medium">
+                                <span className="font-semibold">{total}</span> tickets
+                              </div>
                               <a
                                 href={`https://eticket.railway.gov.bd/booking/train/search?fromcity=${routeList[i]}&tocity=${routeList[j]}&doj=${formatedDate}&class=${item.type}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="mt-1 inline-block text-white px-2 py-1 rounded bg-blue-600 hover:bg-blue-700"
+                                className="mt-1 inline-block text-white px-2 py-1 rounded font-bold bg-green-600 hover:bg-green-700"
                               >
                                 Buy
                               </a>
@@ -155,7 +196,9 @@ export default function MatrixBox() {
                           );
                         })
                       ) : (
-                        <div className="text-gray-400">—</div>
+                        <div className="text-gray-400">
+                          
+                          </div>
                       )}
                     </div>
                   ))}

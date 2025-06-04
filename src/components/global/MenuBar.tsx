@@ -39,7 +39,7 @@ export default function MenuBar() {
   };
 
   return (
-    <div className="menu-bar fixed top-0 grid  grid-cols-3 w-[100vw]  bg-red-500">
+    <div className="menu-bar fixed top-0 grid  grid-cols-3 w-[100vw]  bg-green-600">
       <div className="flex window-control  grid-cols-3 items-start gap-4  p-1">
         <X
           onClick={handleWindowClose}

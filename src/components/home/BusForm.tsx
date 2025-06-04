@@ -74,7 +74,7 @@ export default function BusForm() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full p-5 mt-20">
-      <h2 className="text-lg mb-3">
+      <h2 className="text-lg mb-3 text-green-600 font-bold ">
         {selectedTrainName || "No train selected"}
       </h2>
 
@@ -86,7 +86,7 @@ export default function BusForm() {
           type="button"
           className="
             w-full bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 text-left
-            cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500
+            cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-600
             flex justify-between items-center
           "
           onClick={() => setIsOpen(!isOpen)}
@@ -124,10 +124,10 @@ export default function BusForm() {
                     aria-selected={trainName === selectedTrainName}
                     tabIndex={0}
                     className={`
-                      cursor-pointer px-4 py-2 hover:bg-blue-100
+                      cursor-pointer px-4 py-2 hover:bg-green-100
                       ${
                         trainName === selectedTrainName
-                          ? "bg-blue-200 font-semibold"
+                          ? "bg-green-200 font-semibold"
                           : ""
                       }
                     `}
@@ -142,7 +142,7 @@ export default function BusForm() {
                   </li>
                 ))
               ) : (
-                <li className="px-4 py-2 text-gray-500">No trains found</li>
+                <li className="px-4 py-2 text-gray-600">No trains found</li>
               )}
             </ul>
           </div>
@@ -153,11 +153,11 @@ export default function BusForm() {
 
       <button
         className="
-    bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300
+    bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300
     text-white font-semibold rounded-lg px-6 py-3
     shadow-md transition duration-300 ease-in-out
     focus:outline-none
-    active:bg-blue-800
+    active:bg-green-800
     w-full sm:w-auto
     m-5 
     cursor-pointer
