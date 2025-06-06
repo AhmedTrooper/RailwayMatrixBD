@@ -18,7 +18,10 @@ export default function MenuBar() {
 
   const handleFullScreen = async () => {
     try {
-      if (isFullScreen === true) {
+      let screenStatus = await getCurrentWindow().isFullscreen();
+      setIsFullScreen(screenStatus);
+      console.log(screenStatus);
+      if (isFullScreen) {
         await getCurrentWindow().setFullscreen(false);
         setIsFullScreen(false);
       } else {

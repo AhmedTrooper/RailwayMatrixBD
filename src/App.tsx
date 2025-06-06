@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import MenuBar from "./components/global/MenuBar";
 import { platform } from "@tauri-apps/plugin-os";
-import BusForm from "./components/home/BusForm";
+import TrainForm from "./components/home/TrainForm";
 import { DataContext } from "./context/DataContext";
 import RouteDetails from "./components/home/RouteDetails";
 import MatrixContainer from "./components/home/MatrixContainer";
 import Footer from "./components/global/Footer";
 import { isEmpty } from "lodash";
+import Journeyform from "./components/home/JourneyForm";
+import ReloadSection from "./components/home/ReloadSection";
 
 export default function App() {
   const currentOS = platform();
@@ -29,6 +31,11 @@ export default function App() {
   const [isMatrixCreated, setIsMatrixCreated] = useState(false);
   const [ticketFound, setTicketFound] = useState(false);
   const [numberOfSeatsFound, setNumberOfSeatsFound] = useState(0);
+  const [startingPoint, setStartingPoint] = useState(null);
+  const [destinationPoint, setDestinationPoint] = useState(null);
+  const [trainList, setTrainList] = useState([]);
+  const [searchedTrainOnce, setSearchedTrainOnce] = useState(false);
+  const [isSearchingTrain, setIsSearchingTrain] = useState(false);
 
   useEffect(() => {
     if (currentOS === "android" || currentOS === "ios") setIsMobileOS(true);
@@ -63,12 +70,24 @@ export default function App() {
         setTicketFound,
         numberOfSeatsFound,
         setNumberOfSeatsFound,
+        startingPoint,
+        setStartingPoint,
+        destinationPoint,
+        setDestinationPoint,
+        trainList,
+        setTrainList,
+        searchedTrainOnce,
+        setSearchedTrainOnce,
+        isSearchingTrain,
+        setIsSearchingTrain,
       }}
     >
       <div className="grid w-full min-h-screen">
         {!isMobileOS && <MenuBar />}
-
-        <BusForm />
+        <ReloadSection />
+        {isMobileOS && <Footer />}
+        <Journeyform />
+        <TrainForm />
 
         <div className="w-full grid">
           {!isEmpty(routeListInfo) && <RouteDetails />}
@@ -76,7 +95,7 @@ export default function App() {
 
         {!isEmpty(routeListInfo) && <MatrixContainer />}
 
-        <Footer />
+        {!isMobileOS && <Footer />}
       </div>
     </DataContext.Provider>
   );

@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { isEmpty } from "lodash";
 import NoSeatMessage from "./NoSeatMessage";
 import DatePicker from "./DatePicker";
-import { ArrowDownAZ, ArrowRight, Info } from "lucide-react";
+import { ArrowDown, ArrowRight, Info, X } from "lucide-react";
 
 export default function MatrixBox() {
   const {
@@ -124,7 +124,7 @@ export default function MatrixBox() {
               Create Matrix Again
               <br />
               (for{" "}
-              <span className="text-red-500 font-bold ">{formatedDate}</span>)
+              <span className="text-blue-600 font-bold ">{formatedDate}</span>)
             </p>
           )}
         </button>
@@ -157,17 +157,10 @@ export default function MatrixBox() {
 
         {ticketFound && trainData && trainData.length > 0 ? (
           <div
-            className="p-3 rounded shadow-sm shadow-gray-500"
-            style={{
-              width: "100%",
-              height: "80vh",
-              overflow: "auto",
-              boxSizing: "border-box",
-              scrollbarGutter: "stable both-edges",
-            }}
-          >
+            className="p-0 rounded shadow-sm m-2 bg-blue-800 w-full h-[80vh] shadow-gray-500 overflow-auto"
+            >
             <div
-              className="grid shadow-sm shadow-gray-500 p-2"
+              className="grid shadow-sm shadow-gray-500 p-0"
               style={{
                 gridTemplateColumns: `repeat(${
                   routeList.length + 1
@@ -178,11 +171,11 @@ export default function MatrixBox() {
               <div className="sticky border grid-cols-2 gap-2 content-center border-white bg-green-600  top-0 left-0 grid items-center text-white justify-items-center z-30 h-12 w-full font-bold">
                 <div className="boredr border-white text-[15px]">
                   From
-                  <ArrowDownAZ />
+                  <ArrowDown className="w-5"/>
                 </div>
                 <div className="grid grid-cols-2">
                   To
-                  <ArrowRight />
+                  <ArrowRight className="w-5" />
                 </div>
               </div>
 
@@ -222,7 +215,7 @@ export default function MatrixBox() {
                     <div
                       key={j}
                       className={clsx(
-                        " p-3 gap-1.5 flex flex-col content-center items-center justify-center text-xs min-h-[100px] max-w-full",
+                        " p-2 gap-1.5 flex flex-col content-center items-center justify-center text-xs min-h-[0px] max-w-full",
                         {
                           "border border-white": true,
                           "bg-green-300": j % 2 === 1,
@@ -239,21 +232,22 @@ export default function MatrixBox() {
                             <div
                               key={k}
                               className={clsx(
-                                "bg-white border border-white rounded px-2 py-1 text-[10px] text-center w-full"
+                                "bg-white border border-white rounded p-1  text-[10px] text-center w-full"
                               )}
                             >
                               <div
-                                className="font-semibold text-green-600 truncate"
+                                className="font-bold text-green-600 truncate"
                                 title={item.type}
                               >
                                 {item.type}
                               </div>
-                              <div className="text-gray-700 font-semibold">
-                                {Number(item.fare) + item.vat_amount} TK
-                              </div>
+                             
                               <div className="text-green-700 font-medium">
-                                <span className="font-semibold">{total}</span>{" "}
-                                tickets
+                                <span className="font-bold text-lg">{total}</span>{" "}
+                                
+                              </div>
+                               <div className="text-gray-700 font-semibold">
+                                {Number(item.fare) + item.vat_amount} TK
                               </div>
                               <a
                                 href={`https://eticket.railway.gov.bd/booking/train/search?fromcity=${routeList[i]}&tocity=${routeList[j]}&doj=${formatedDate}&class=${item.type}`}
@@ -267,7 +261,9 @@ export default function MatrixBox() {
                           );
                         })
                       ) : (
-                        <div className="text-gray-400"></div>
+                        <div className="text-gray-400 grid content-center justify-items-center">
+                          <X className="text-white"/>
+                        </div>
                       )}
                     </div>
                   ))}

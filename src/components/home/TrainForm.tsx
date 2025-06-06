@@ -4,8 +4,9 @@ import { DataContext } from "../../context/DataContext";
 import DatePicker from "./DatePicker";
 import { fetch } from "@tauri-apps/plugin-http";
 import SelectedDate from "./SelectedDate";
+import { Info } from "lucide-react";
 
-export default function BusForm() {
+export default function TrainForm() {
   const {
     setSelectedTrainName,
     selectedTrainName,
@@ -89,10 +90,20 @@ export default function BusForm() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full p-5 mt-20">
+    <div className="flex flex-col items-center justify-center w-full p-5 mt-0">
       <h2 className="text-lg mb-3 text-green-600 font-bold ">
-        {selectedTrainName || "No train selected"}
+        {selectedTrainName || (
+          <p className="text-red-600">No train is selected!</p>
+        )}
       </h2>
+
+      <div className="grid grid-cols-12 justify-items-center content-center items-center">
+        <Info className="text-red-600 w-5" />
+        <p className="text-sm mt-2 mb-2 col-span-10 p-2 text-red-500 ">
+          If you know the name of the train you have to use, you can select the
+          train directly from <span className="text-green-600">dropdown below</span>, otherwise don't change it...
+        </p>
+      </div>
 
       <div
         className="relative w-4/5"
@@ -109,7 +120,7 @@ export default function BusForm() {
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
-          {selectedTrainName || "Select a train"}
+          {selectedTrainName || "Manually select train"}
           <span className="ml-2">&#9662;</span>
         </button>
 
@@ -183,6 +194,7 @@ export default function BusForm() {
     w-full sm:w-auto
     m-5 
     cursor-pointer
+    disabled:bg-red-700
   "
         onClick={() => {
           setTrainData(null);
@@ -191,10 +203,17 @@ export default function BusForm() {
             setShouldFetch(true);
           }, 2000);
         }}
-        disabled={!(selectedDate && selectTrain)}
+        disabled={!(selectedDate && selectedTrainModel)}
       >
         Find Ticket
       </button>
+
+      {
+        !selectedDate && !selectedTrainModel && <div className="bg-red-600 items-center content-center  grid-cols-12 grid p-1 rounded-sm text-white  m-2 text-sm">
+          <Info className="col-span-2 w-5"/>
+          <p className="col-span-10">Select both train and date</p>
+           </div>
+      }
 
       <SelectedDate />
     </div>

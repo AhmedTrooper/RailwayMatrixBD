@@ -1,8 +1,102 @@
 @import "tailwindcss";
 
-*{
+/* *{
     font-family: 'Playfair Display', serif;
+} */
+
+/* * {
+  font-family: 'Roboto', sans-serif;
+} */
+
+/* * {
+  font-family: 'Open Sans', sans-serif;
+} */
+
+/* * {
+  font-family: 'Lato', sans-serif;
+} */
+
+/* * {
+  font-family: 'Montserrat', sans-serif;
+} */
+/* 
+* {
+  font-family: 'Oswald', sans-serif;
+} */
+
+/* * {
+  font-family: 'Raleway', sans-serif;
+} */
+
+/* * {
+  font-family: 'Merriweather', serif;
+} */
+
+/* * {
+  font-family: 'Poppins', sans-serif;
+} */
+
+/* * {
+  font-family: 'Ubuntu', sans-serif;
+} */
+
+/* * {
+  font-family: 'Noto Sans', sans-serif;
+} */
+
+/* * {
+  font-family: 'Playfair Display', serif;
+} */
+
+/* * {
+  font-family: 'Work Sans', sans-serif;
+} */
+
+/* * {
+  font-family: 'Nunito', sans-serif;
+} */
+
+/* * {
+  font-family: 'Fira Sans', sans-serif;
+} */
+
+/* * {
+  font-family: 'Source Sans Pro', sans-serif;
+} */
+
+/* * {
+  font-family: 'Inconsolata', monospace;
+} */
+
+/* * {
+  font-family: 'PT Serif', serif;
+} */
+
+/* * {
+  font-family: 'Quicksand', sans-serif;
+} */
+
+/* * {
+  font-family: 'Rubik', sans-serif;
+} */
+
+* {
+  font-family: 'Josefin Sans', sans-serif;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .container {
   margin: 0;
   padding-top: 10vh;
@@ -12,3 +106,27 @@
   text-align: center;
 }
 
+
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 4px; /* scrollbar width */
+  height: 4px; /* scrollbar height for horizontal */
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 2px;
+}
+
+.thin-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(100, 100, 100, 0.5) transparent; /* Firefox */
+}
