@@ -157,7 +157,7 @@ export default function MatrixBox() {
 
         {ticketFound && trainData && trainData.length > 0 ? (
           <div
-            className="p-0 rounded shadow-sm m-2 bg-blue-800 w-full h-[80vh] shadow-gray-500 overflow-auto"
+            className="p-0 rounded shadow-sm m-2 bg-trasparent w-fit max-w-full h-fit max-h-[80vh] overflow-auto"
             >
             <div
               className="grid shadow-sm shadow-gray-500 p-0"

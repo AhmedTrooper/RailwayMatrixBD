@@ -215,7 +215,7 @@ export default function Journeyform() {
             <span className="p-2 col-span-2">
               <Info className="text-[10px] w-[18px] text-white" />
             </span>
-            <p className="col-span-10 grid h-fit bg-blue-500 self-center justify-self-start">
+            <p className="col-span-10 grid h-fit self-center justify-self-start">
               Change Origin station or Destination station. Both can't be
               same...
             </p>
