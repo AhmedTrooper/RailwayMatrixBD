@@ -44,7 +44,8 @@ Plan your train journey with an intelligent and instant interface. This native a
 - 🦀 **Tauri v2** – Cross-platform native app shell  
 - ⚡ **Vite** – Fast and modern build tool  
 - 🎨 **Tailwind CSS** – Utility-first styling framework
-
+- 🎶 **Hero UI** - UI framework
+- 🥳 **Zustand** - Global store management
 ---
 
 ## 📦 Installation
@@ -64,7 +65,7 @@ Download the latest release from the [**Releases**](https://github.com/AhmedTroo
 
 ## 🙏 Acknowledgements
 
-With ❤️ to [**Bangladesh Railway Train Seat Matrix Web Application**](https://github.com/nishatrhythm/Bangladesh-Railway-Train-Seat-Matrix-Web-Application) for the matrix concept and inspiration.
+With ❤️ to [**Bangladesh Railway Train Seat Matrix Web Application**](https://github.com/nishatrhythm/Bangladesh-Railway-Train-Seat-Matrix-Web-Application) and [**Bangladesh Railway Train Seat Availability Web Application**](https://github.com/nishatrhythm/Bangladesh-Railway-Train-Seat-Availability-Web-Application) for the matrix concept and inspiration.
 
 ---
 
