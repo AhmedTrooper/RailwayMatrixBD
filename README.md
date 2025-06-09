@@ -4,6 +4,13 @@
 
 ---
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AhmedTrooper/RailwayMatrixBD/refs/heads/main/additionalFiles/First%20part.png" alt="First Part" width="400" />
+  <img src="https://raw.githubusercontent.com/AhmedTrooper/RailwayMatrixBD/refs/heads/main/additionalFiles/Second%20Part.png" alt="Second Part" width="400" />
+</p>
+
+
+
 ## 📖 Overview
 
 Plan your train journey with an intelligent and instant interface. This native application offers powerful features like segmented seat tracking, fare breakdowns, and smart route planning — available on both desktop and Android.
