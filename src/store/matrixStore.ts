@@ -99,7 +99,7 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
                   title: "Seat Available",
                   description: `Seats found for route ${from} -> ${to}`,
                   color: "success",
-                  timeout: 1000,
+                  timeout: 200,
                 });
               }
             } catch (err) {
@@ -108,7 +108,7 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
                 title: "Failed for this route",
                 description: `Error fetching ${from} -> ${to}`,
                 color: "warning",
-                timeout: 1000,
+                timeout: 200,
               });
             }
           })();
@@ -118,10 +118,17 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
       }
 
       await Promise.all(fetchTasks);
+
       setTrainData(dataMatrix);
       setNumberOfTicketFound(ticketNumber);
     } catch (e) {
       console.error("Matrix fetch error:", e);
+      addToast({
+        title: "Total fetching error",
+        description: `Error to fetch matrix...`,
+        color: "danger",
+        timeout: 1000,
+      });
     } finally {
       const matrixStore = useMatrixStore.getState();
       matrixStore.setIsLoadingTicketFetching(false);

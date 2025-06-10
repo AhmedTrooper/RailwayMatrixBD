@@ -22,6 +22,8 @@ type UserTrainStore = {
   userTrainRouteInformationList: UserTrainRouteInformationList | [];
   hasTrainBeenSearchedOnce: boolean;
   isTrainFetchingLoading: boolean;
+  offDays: string[] | [];
+  setOffDays: (list: [] | string[]) => void;
   trainInformaton: TrainInformation | null;
   setTrainInformation: (trInfo: TrainInformation | null) => void;
 
@@ -36,9 +38,13 @@ type UserTrainStore = {
   validateAndFetchTrain: () => void;
   showRouteInformation: boolean;
   setShowRouteInformation: (status: boolean) => void;
+  calculateOffDays: () => void;
 };
 
 export const useTrainStore = create<UserTrainStore>((set, get) => ({
+  offDays: [],
+  setOffDays: (list: [] | string[]) => set({ offDays: list }),
+
   setTrainInformation: (trInfo: TrainInformation | null) =>
     set({
       trainInformaton: trInfo,
@@ -97,7 +103,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
           title: "Request successfull",
           description: "Request is sent without any error",
           color: "success",
-          timeout: 300,
+          timeout: 200,
         });
 
         let responseObject = await response.json();
@@ -110,14 +116,14 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
             title: "No train found",
             description: "No train is found in your route.....",
             color: "warning",
-            timeout: 300,
+            timeout: 3000,
           });
         } else {
           addToast({
             title: "Congrats",
             description: "Train is available for this route",
             color: "success",
-            timeout: 300,
+            timeout: 3000,
           });
         }
 
@@ -145,10 +151,20 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
 
   fetchUserTrainInformation: async () => {
     try {
+      addToast({
+        title: "Ticket Request",
+        description: "Request sent successfully",
+        color: "primary",
+        timeout: 300,
+      });
+
       const trainStore = get();
       const journeyStore = useJourneyStore.getState();
       const userTrainModel = trainStore.userTrainModel;
       const journeyDate = journeyStore.journeyDate;
+      trainStore.trainInformaton = null;
+      trainStore.setOffDays([]);
+      trainStore.setUserTrainRouteInformationList([]);
       const response = await fetch(
         "https://railspaapi.shohoz.com/v1.0/web/train-routes",
         {
@@ -165,13 +181,14 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
 
       if (response.status === 200) {
         addToast({
-          title: "Ticket Request",
-          description: "Request sent successfully",
-          color: "primary",
+          title: "Successful response",
+          description: "Server responded successfully",
+          color: "success",
           timeout: 300,
         });
         const routeDataObject = await response.json();
         trainStore.setTrainInformation(routeDataObject.data);
+        // console.log(routeDataObject.data)
 
         set({ userTrainRouteInformationList: routeDataObject!.data!.routes });
         if (!routeDataObject?.data?.routes) return;
@@ -193,7 +210,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
           title: "Check Internet connection",
           description: "Check if internet connection is ok...",
           color: "danger",
-          timeout: 300,
+          timeout: 1000,
         });
       } else {
         addToast({
@@ -226,6 +243,28 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
     const setIsReadyToFetchUserTrainList =
       journeyStore.setIsReadyToFetchUserTrainList;
 
+    if (!journeyDate) {
+      addToast({
+        title: "Date error",
+        description: `Journey date must be selected`,
+        color: "warning",
+        timeout: 1000,
+      });
+
+      return;
+    }
+
+    if (originStation === destinationStation) {
+      addToast({
+        title: "Station Error",
+        description: `Origin Station and Destination station can't be same....`,
+        color: "warning",
+        timeout: 1000,
+      });
+
+      return;
+    }
+
     const isJourneyInfoValid =
       (journeyDate && originStation && destinationStation && originStation) !==
       destinationStation;
@@ -237,7 +276,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
         title: "Internet Error",
         description: `Check if internet connection is ok`,
         color: "danger",
-        timeout: 300,
+        timeout: 1000,
       });
 
       return;
@@ -253,7 +292,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
         title: "Request sent",
         description: `Trying to fetch train list`,
         color: "primary",
-        timeout: 300,
+        timeout: 500,
       });
 
       fetchUserTrainList();
@@ -262,9 +301,23 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
         title: "Invalid Journey Info",
         description: "Fix journey information correctly....",
         color: "danger",
-        timeout: 300,
+        timeout: 800,
       });
       setHasTrainBeenSearchedOnce(false);
     }
+  },
+
+  calculateOffDays: () => {
+    const { trainInformaton, setOffDays } = get();
+
+    const allDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const activeDays = (trainInformaton?.days || []).map((day) =>
+      day.toLowerCase()
+    );
+
+    const offDays = allDays.filter(
+      (day) => !activeDays.includes(day.toLowerCase())
+    );
+    setOffDays(offDays);
   },
 }));

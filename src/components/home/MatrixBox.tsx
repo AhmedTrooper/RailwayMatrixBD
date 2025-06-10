@@ -47,7 +47,7 @@ export default function MatrixBox() {
                     key={`head-${idx}`}
                     className={clsx(
                       "sticky top-0 font-bold text-white text-xs truncate p-2 z-50 dark:bg-zinc-900",
-                      idx % 2 === 0 ? "bg-green-500" : "bg-blue-600"
+                      idx % 2 === 0 ? "bg-green-700" : "bg-blue-600"
                     )}
                     title={city}
                   >
@@ -63,7 +63,7 @@ export default function MatrixBox() {
                     className={clsx(
                       "sticky left-0 font-bold text-white text-xs truncate p-2 border dark:border-zinc-700   z-40 shadow-sm shadow-black",
                       i % 2 === 0
-                        ? "bg-green-500 dark:bg-zinc-900"
+                        ? "bg-green-700 dark:bg-zinc-900"
                         : "bg-blue-600 dark:bg-zinc-900"
                     )}
                     title={routeList[i]}

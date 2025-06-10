@@ -1,6 +1,6 @@
 import { useTrainStore } from "@/store/trainStore";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
-import { ArrowDown, Disc, MapPin } from "lucide-react";
+import { ArrowDown, Disc, MapPin, MapPinHouse } from "lucide-react";
 import { BsPeople } from "react-icons/bs";
 
 export default function RouteInformation() {
@@ -10,7 +10,7 @@ export default function RouteInformation() {
   const trainRouteInformationListLength = userTrainRouteInformationList.length;
 
   return (
-    <div className="grid gap-5 md:w-2/3 lg:w-3/5 justify-self-center">
+    <div className="grid gap-5 md:w-2/3 lg:w-3/5 justify-self-center max-h-[60vh] overflow-auto p-4">
       {userTrainRouteInformationList.map((route, index) => (
         <div
           key={index}
@@ -19,7 +19,13 @@ export default function RouteInformation() {
           <Card className="w-full">
             <CardHeader className="">
               <span className="p-2">
-               {index === 0 ? <BsPeople/> : index ===(trainRouteInformationListLength-1) ? <MapPin /> : <Disc/>}
+                {index === 0 ? (
+                  <BsPeople />
+                ) : index === trainRouteInformationListLength - 1 ? (
+                  <MapPin />
+                ) : (
+                  <Disc />
+                )}
               </span>
               {route.city}
             </CardHeader>
@@ -27,14 +33,23 @@ export default function RouteInformation() {
               {route.arrival_time && (
                 <div>Arrival time : {route.arrival_time}</div>
               )}
+              {route.departure_time && (
+                <div>Departure time : {route.departure_time}</div>
+              )}
+
               {route.duration && <div>Duration : {route.duration} min</div>}
               {route.halt && <div>Halt : {route.halt} min</div>}
             </CardBody>
-          {(index===0 || index===(trainRouteInformationListLength -1)) &&  <CardFooter>
-                {index===0 ? 'Starting Point' : 'Ending point'}
-            </CardFooter>}
+            {(index === 0 || index === trainRouteInformationListLength - 1) && (
+              <CardFooter>
+                {index === 0 ? "Starting Point" : "Ending point"}
+              </CardFooter>
+            )}
           </Card>
-          <ArrowDown />
+          {!(index === trainRouteInformationListLength - 1) && <ArrowDown />}
+          {index === trainRouteInformationListLength - 1 && (
+            <MapPinHouse className="text-green-600  mt-4 mb-4" />
+          )}
         </div>
       ))}
     </div>
