@@ -97,7 +97,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
           title: "Request successfull",
           description: "Request is sent without any error",
           color: "success",
-          timeout: 1000,
+          timeout: 300,
         });
 
         let responseObject = await response.json();
@@ -110,14 +110,14 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
             title: "No train found",
             description: "No train is found in your route.....",
             color: "warning",
-            timeout: 1000,
+            timeout: 300,
           });
         } else {
           addToast({
             title: "Congrats",
             description: "Train is available for this route",
             color: "success",
-            timeout: 1000,
+            timeout: 300,
           });
         }
 
@@ -127,7 +127,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
           title: "Request not successfull",
           description: "Request is not sent to server",
           color: "danger",
-          timeout: 1000,
+          timeout: 300,
         });
       }
     } catch (e: any) {
@@ -135,7 +135,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
         title: "Request error",
         description: e.toString(),
         color: "danger",
-        timeout: 1000,
+        timeout: 300,
       });
     } finally {
       const setIsTrainFetchingLoading = get().setIsTrainFetchingLoading;
@@ -168,7 +168,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
           title: "Ticket Request",
           description: "Request sent successfully",
           color: "primary",
-          timeout: 1000,
+          timeout: 300,
         });
         const routeDataObject = await response.json();
         trainStore.setTrainInformation(routeDataObject.data);
@@ -184,7 +184,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
           title: "Request Error",
           description: "Check if train name, date  is ok...or try again...",
           color: "warning",
-          timeout: 1000,
+          timeout: 300,
         });
       }
     } catch (error) {
@@ -193,14 +193,14 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
           title: "Check Internet connection",
           description: "Check if internet connection is ok...",
           color: "danger",
-          timeout: 1000,
+          timeout: 300,
         });
       } else {
         addToast({
           title: "Error occurred",
           description: "Try again...",
           color: "danger",
-          timeout: 1000,
+          timeout: 300,
         });
       }
     }
@@ -237,7 +237,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
         title: "Internet Error",
         description: `Check if internet connection is ok`,
         color: "danger",
-        timeout: 1000,
+        timeout: 300,
       });
 
       return;
@@ -253,7 +253,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
         title: "Request sent",
         description: `Trying to fetch train list`,
         color: "primary",
-        timeout: 1000,
+        timeout: 300,
       });
 
       fetchUserTrainList();
@@ -262,7 +262,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
         title: "Invalid Journey Info",
         description: "Fix journey information correctly....",
         color: "danger",
-        timeout: 1000,
+        timeout: 300,
       });
       setHasTrainBeenSearchedOnce(false);
     }

@@ -29,38 +29,45 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
   dummyMatrixVisible: true,
   setDummyMatrixVisible: (status: boolean) =>
     set({ dummyMatrixVisible: status }),
+
   createMatrix: async () => {
     try {
       const matrixStore = get();
       const trainStore = useTrainStore.getState();
       const journeyStore = useJourneyStore.getState();
+
       let ticketNumber = 0;
-      matrixStore.setIsLoadingTicketFetching(true);
-      matrixStore.setHasSearchedForTicket(true);
-      matrixStore.setDummyMatrixVisible(false);
-      matrixStore.setShowTicketNotFoundBox(false);
+      const {
+        setIsLoadingTicketFetching,
+        setHasSearchedForTicket,
+        setDummyMatrixVisible,
+        setShowTicketNotFoundBox,
+        setShowTicketFoundBox,
+        setTicketFound,
+        setTrainData,
+        setNumberOfTicketFound,
+        hasSearchedForTicket,
+        showTicketFoundBox,
+        ticketFound,
+      } = matrixStore;
 
-      if (matrixStore.hasSearchedForTicket) {
-        matrixStore.setHasSearchedForTicket(false);
-      }
+      setIsLoadingTicketFetching(true);
+      setHasSearchedForTicket(true);
+      setDummyMatrixVisible(false);
+      setShowTicketNotFoundBox(false);
 
-      let showTicketFoundBox = matrixStore.showTicketFoundBox;
-      let setShowTicketFoundBox = matrixStore.setShowTicketFoundBox;
+      if (hasSearchedForTicket) setHasSearchedForTicket(false);
+      if (showTicketFoundBox) setShowTicketFoundBox(false);
+      if (ticketFound) setTicketFound(false);
 
-      if (showTicketFoundBox) {
-        setShowTicketFoundBox(false);
-      }
       const routeList = trainStore.routeList;
       const size = routeList.length;
-      const setTicketFound = matrixStore.setTicketFound;
-      const ticketFound = matrixStore.ticketFound;
-      if (ticketFound) {
-        setTicketFound(false);
-      }
-      const dataMatrix: SeatType[][] = Array.from({ length: size }, () =>
-        Array.from({ length: size }, () => null as any)
-      );
       const selectedTrainName = trainStore.userTrainName;
+
+      const dataMatrix: SeatType[][] = Array.from({ length: size }, () =>
+        Array(size).fill(null)
+      );
+
       const fetchTasks: Promise<void>[] = [];
 
       for (let i = 0; i < size - 1; i++) {
@@ -68,22 +75,18 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
           const from = routeList[i];
           const to = routeList[j];
 
-          if (from === to) continue;
+          const url = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${from}&to_city=${to}&date_of_journey=${journeyStore.formattedJourneyDate}&seat_class=SHULOV`;
 
-          const tempUrl = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${from}&to_city=${to}&date_of_journey=${journeyStore.formattedJourneyDate}&seat_class=SHULOV`;
-
-          const task = fetch(tempUrl)
-            .then((res) => res.json())
-            .then((jsonData) => {
-              const trainList = jsonData?.data?.trains || [];
-              const train = trainList.find(
+          const task = (async () => {
+            try {
+              const res = await fetch(url);
+              const json = await res.json();
+              const train = json?.data?.trains?.find(
                 (t: any) => t?.trip_number === selectedTrainName
               );
-              const seatTypes = train?.seat_types || [];
 
-              const availableSeats = seatTypes.filter(
-                (item: any) =>
-                  item.seat_counts.online + item.seat_counts.offline > 0
+              const availableSeats = (train?.seat_types || []).filter(
+                (s: any) => s.seat_counts.online + s.seat_counts.offline > 0
               );
 
               dataMatrix[i][j] = availableSeats;
@@ -96,38 +99,38 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
                   title: "Seat Available",
                   description: `Seats found for route ${from} -> ${to}`,
                   color: "success",
-                  timeout: 30,
+                  timeout: 1000,
                 });
               }
-            })
-            .catch((err) => {
+            } catch (err) {
               console.error(`Error fetching ${from} -> ${to}:`, err);
               addToast({
                 title: "Failed for this route",
-                description: `Error fetching ${from} -> ${to}:`,
+                description: `Error fetching ${from} -> ${to}`,
                 color: "warning",
                 timeout: 1000,
               });
-            });
+            }
+          })();
 
           fetchTasks.push(task);
         }
       }
 
       await Promise.all(fetchTasks);
-      matrixStore.setTrainData(dataMatrix);
-      matrixStore.setNumberOfTicketFound(ticketNumber);
+      setTrainData(dataMatrix);
+      setNumberOfTicketFound(ticketNumber);
     } catch (e) {
       console.error("Matrix fetch error:", e);
     } finally {
-      let matrixStore = useMatrixStore.getState();
+      const matrixStore = useMatrixStore.getState();
       matrixStore.setIsLoadingTicketFetching(false);
-      let setShowTicketFoundBox = matrixStore.setShowTicketFoundBox;
+
       if (!matrixStore.ticketFound) {
         matrixStore.setDummyMatrixVisible(true);
         matrixStore.setShowTicketNotFoundBox(true);
       } else {
-        setShowTicketFoundBox(true);
+        matrixStore.setShowTicketFoundBox(true);
       }
     }
   },
