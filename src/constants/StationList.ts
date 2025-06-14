@@ -63,7 +63,7 @@ export const stationList = [
         "Choumuhani",
         "Chuadanga",
         "Chulkati_Bazar",
-        "Coxs Bazar",
+        "Cox's Bazar",
         "Cumilla",
         "Darshana_Halt",
         "Dashuria",

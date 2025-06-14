@@ -131,5 +131,8 @@ export const trainList = [
         "UPABAN EXPRESS (739)",
         "UPABAN EXPRESS (740)",
         "UPAKUL EXPRESS (711)",
-        "UPAKUL EXPRESS (712)"
+        "UPAKUL EXPRESS (712)",
+        "BURIMARI EID SHUTTLE 1 (19)",
+        "BURIMARI EID SHUTTLE 2 (20)",
+         "CHANDPUR EID SPL 2 (02)",
     ];
