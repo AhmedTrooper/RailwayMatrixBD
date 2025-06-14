@@ -8,7 +8,7 @@ export default function UserTrainListComponent() {
   const userTrainName = useTrainStore((state) => state.userTrainName);
   const extractTrainModel = useTrainStore((state) => state.extractTrainModel);
   return (
-    <Card className="sm:col-span-2 w-full mt-4 sm:w-fit md:w-1/2 sm:p-4">
+    <Card className="sm:col-span-2 bg-green-50 w-60 mt-4 sm:w-80 sm:bg-red-500 md:bg-green-500 lg:bg-blue-500 md:w-1/2 sm:p-4">
       <CardHeader>
         <h1 className="font-bold text-3xl w-full grid justify-items-center items-center">
           Available Trains

@@ -10,6 +10,8 @@ import { useTrainListStore } from "./store/trainListStore";
 import MobileMenuBar from "./components/global/menubar/MobileMenuBar";
 import clsx from "clsx";
 import Footer from "./components/global/footer/Footer";
+import { Button } from "@heroui/react";
+import { useMatrixStore } from "./store/matrixStore";
 
 function App() {
   const dark = useThemeStore((state) => state.dark);
@@ -18,6 +20,7 @@ function App() {
   const isMobileOS = useOsInfoStore((state) => state.isMobileOS);
   const stationList = useStationStore((state) => state.stationList);
   const trainList = useTrainListStore((state) => state.trainList);
+   const object = useMatrixStore(state => state.trainData);
   const setOriginStationList = useJourneyStore(
     (state) => state.setOriginStationList
   );
@@ -76,6 +79,28 @@ function App() {
   //   };
   // }, []);
 
+
+
+ const showObjectDetails = () => {
+ console.log(object)
+
+  function recurse(obj:any, prefix = '') {
+    let str = '';
+    for (const [key, value] of Object.entries(obj)) {
+      if (typeof value === 'object' && value !== null) {
+        str += recurse(value, `${prefix}${key}.`);
+      } else {
+        str += `${prefix}${key}: ${value}\n`;
+      }
+    }
+    return str;
+  }
+
+  const detailsString = recurse(object);
+  console.log(detailsString);
+};
+
+
   return (
     <div
       className={clsx(
@@ -88,6 +113,7 @@ function App() {
       {!isMobileOS && <MenuBar />}
       {isMobileOS && <MobileMenuBar />}
       <Outlet />
+      <Button onPress={ showObjectDetails}>Get Object Info</Button>
       {!isMobileOS && <Footer />}
     </div>
   );

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { useTrainStore } from "./trainStore";
-import { SeatType } from "@/interface/SeatTypeInterface";
-import { MatrixStore } from "@/interface/MatrixStoreInterface";
+import { SeatType } from "@/interface/store/SeatTypeInterface";
+import { MatrixStore } from "@/interface/store/MatrixStoreInterface";
 import { useJourneyStore } from "./journeyStore";
 import { fetch } from "@tauri-apps/plugin-http";
 import { addToast } from "@heroui/react";
