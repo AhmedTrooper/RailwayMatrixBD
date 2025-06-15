@@ -6,8 +6,11 @@ import { useJourneyStore } from "./journeyStore";
 import { fetch } from "@tauri-apps/plugin-http";
 import { addToast } from "@heroui/react";
 import { SeatTypeObject } from "@/interface/SeatTypesArray";
+import { isEmpty } from "lodash";
 
 export const useMatrixStore = create<MatrixStore>((set, get) => ({
+  segmentedRouteFound:true,
+setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
   segmentedOriginStation: null,
   setSegmentedOriginStation: (s: string | null) =>
     set({ segmentedOriginStation: s }),
@@ -156,7 +159,15 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
     const dataMatrix = matrixStore.trainData;
     const segmentedDestinationStation = matrixStore.segmentedDestinationStation;
     const segmentedOriginStation = matrixStore.segmentedOriginStation;
+    const setSegmentedRouteFound = matrixStore.setSegmentedRouteFound;
     try {
+      setSegmentedRouteFound(false);
+      addToast({
+                title: "Request sent",
+                description: "Segmented route requested",
+                color: "primary",
+                timeout: 300,
+              });
       matrixStore.showSegmentedRoute(
         segmentedOriginStation as string,
         segmentedDestinationStation as string,
@@ -164,6 +175,12 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
       );
     } catch (e: any) {
       console.log(e);
+      addToast({
+                title: "Error Occurred",
+                description: "Segmented route requested failed",
+                color: "danger",
+                timeout: 1000,
+              });
     }
   },
   findSegmentedRoute: (
@@ -204,14 +221,22 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
   showSegmentedRoute(fromCity: string, toCity: string, dataMatrix: any[][]) {
     let segmentedArray = [];
     const matrixStore = get();
+    const setSegmentedRouteFound = matrixStore.setSegmentedRouteFound;
     const trainStore = useTrainStore.getState();
     const routeList = trainStore.routeList;
     const setSegmentedSeatArray = matrixStore.setSegmentedSeatArray;
     const startIndex = routeList.indexOf(fromCity);
     const endIndex = routeList.indexOf(toCity);
+    
 
     if (startIndex === -1 || endIndex === -1) {
-      console.error("Invalid city name");
+      // console.error("Invalid city name");
+      addToast({
+                title: "City Error",
+                description: "Invalid city name",
+                color: "warning",
+                timeout: 1000,
+              });
       return;
     }
 
@@ -222,11 +247,18 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
     );
 
     if (path.length === 0) {
-      console.log(`No segmented route found from ${fromCity} to ${toCity}.`);
+      setSegmentedRouteFound(false);
+      // console.log(`No segmented route found from ${fromCity} to ${toCity}.`);
+       addToast({
+                title: "Not Found",
+                description: `No segmented route found from ${fromCity} to ${toCity}.`,
+                color: "danger",
+                timeout: 1000,
+              });
       return;
     }
 
-    console.log(`Segmented route from ${fromCity} to ${toCity}:`);
+    // console.log(`Segmented route from ${fromCity} to ${toCity}:`);
     for (let i = 0; i < path.length - 1; i++) {
       const from = path[i];
       const to = path[i + 1];
@@ -243,5 +275,24 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
       segmentedArray.push(segmentedObject);
     }
     setSegmentedSeatArray(segmentedArray);
+    if(!isEmpty(segmentedArray)){
+      setSegmentedRouteFound(true);
+      addToast({
+                title: "Found",
+                description: `segmented route found successfully for ${fromCity} to ${toCity}.`,
+                color: "success",
+                timeout: 1000,
+              });
+    } else {
+       addToast({
+                title: "No Route Found",
+                description: `No route found`,
+                color: "warning",
+                timeout: 2000,
+              });
+    }
+
+    
+    
   },
 }));

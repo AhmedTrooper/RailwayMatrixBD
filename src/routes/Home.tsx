@@ -36,7 +36,7 @@ export default function Home() {
       {dummyMatrixVisible && <DummyMatrixBox />}
       {showTicketFoundBox && <TicketNumber />}
       {<MatrixBox />}
-         {!isEmpty(routeList) &&<SegmentedRoute/>}
+         {!isEmpty(routeList) && showTicketFoundBox && <SegmentedRoute/>}
     </div>
   );
 }

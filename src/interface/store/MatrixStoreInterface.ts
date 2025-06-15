@@ -32,4 +32,6 @@ setSegmentedOriginStation:(s:string | null)=>void;
 segmentedDestinationStation:string | null;
 setSegmentedDestinationStation:(s:string | null)=>void;
 segmentedRouteFinder: () =>void;
+segmentedRouteFound:boolean;
+setSegmentedRouteFound:(srf:boolean)=>void;
 }

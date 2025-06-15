@@ -4,11 +4,15 @@ import { isEmpty } from "lodash";
 import SegmentedDestinationStationDropdown from "./SegmentedDestinationStationDropdown";
 import { Button } from "@heroui/react";
 import { useMatrixStore } from "@/store/matrixStore";
+import SegmentedRouteList from "./SegmentedRouteList";
+import SegmentedRouteNotFound from "./SegmentedRouteNotFound";
 
 export default function SegmentedRoute(){
         const routeList = useTrainStore(state => state.routeList);
        const segmentedRouteFinder =  useMatrixStore(state=>state.segmentedRouteFinder)
-              const segmentedSeatArray =  useMatrixStore(state=>state.segmentedSeatArray)
+              const segmentedSeatArray =  useMatrixStore(state=>state.segmentedSeatArray);
+              const segmentedRouteFound =  useMatrixStore(state=>state.segmentedRouteFound);
+              useMatrixStore(state=>state.showTicketFoundBox);
 
     
     
@@ -18,6 +22,7 @@ export default function SegmentedRoute(){
 {!isEmpty(routeList) && <SegmentedOriginStationDropdown/>}
 {!isEmpty(routeList) && <SegmentedDestinationStationDropdown/>}
 <Button color="primary" className="p-5 w-40 h-18 font-bold sm:col-span-2" onPress={()=>segmentedRouteFinder()}>Check Availability</Button>
-<Button onPress={()=> console.log(segmentedSeatArray) }>Show</Button>
+{!isEmpty(segmentedSeatArray) && segmentedRouteFound && <SegmentedRouteList/>}
+{isEmpty(segmentedSeatArray) && !segmentedRouteFound && <SegmentedRouteNotFound/>}
     </div>);
 }
