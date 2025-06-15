@@ -1,3 +1,4 @@
+import { SeatTypeObject } from "../SeatTypesArray";
 import { SeatType } from "./SeatTypeInterface";
 
 export interface MatrixStore {
@@ -18,4 +19,17 @@ export interface MatrixStore {
   setShowTicketFoundBox:(status:boolean)=>void;
    showTicketNotFoundBox:boolean;
   setShowTicketNotFoundBox:(status:boolean)=>void;
+  segmentedSeatArray: SeatTypeObject[];
+  setSegmentedSeatArray:(segArray:SeatTypeObject[])=>void;
+  findSegmentedRoute: (
+    start: number,
+    end: number,
+    dataMatrix: any[][]
+)=> number[];
+showSegmentedRoute(fromCity: string, toCity: string, dataMatrix: any[][]):void;
+segmentedOriginStation:string | null;
+setSegmentedOriginStation:(s:string | null)=>void;
+segmentedDestinationStation:string | null;
+setSegmentedDestinationStation:(s:string | null)=>void;
+segmentedRouteFinder: () =>void;
 }

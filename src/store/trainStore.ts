@@ -12,7 +12,7 @@ import { TrainInformation } from "@/interface/TrainInfo";
 
 type UserTrainStore = {
   userTrainList: string[] | [];
-  routeList: string[] | [];
+  routeList: string[];
   userTrainModel: string | null;
   userTrainName: string | null;
   setUserTrainList: (trainList: string[] | []) => void;

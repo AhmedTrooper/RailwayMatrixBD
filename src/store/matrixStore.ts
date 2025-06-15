@@ -5,8 +5,18 @@ import { MatrixStore } from "@/interface/store/MatrixStoreInterface";
 import { useJourneyStore } from "./journeyStore";
 import { fetch } from "@tauri-apps/plugin-http";
 import { addToast } from "@heroui/react";
+import { SeatTypeObject } from "@/interface/SeatTypesArray";
 
 export const useMatrixStore = create<MatrixStore>((set, get) => ({
+  segmentedOriginStation: null,
+  setSegmentedOriginStation: (s: string | null) =>
+    set({ segmentedOriginStation: s }),
+  segmentedDestinationStation: null,
+  setSegmentedDestinationStation: (s: string | null) =>
+    set({ segmentedDestinationStation: s }),
+  segmentedSeatArray: [],
+  setSegmentedSeatArray: (segArray: SeatTypeObject[]) =>
+    set({ segmentedSeatArray: segArray }),
   setTicketFound: (status: boolean) => set({ ticketFound: status }),
   ticketFound: false,
   isLoadingTicketFetching: false,
@@ -140,5 +150,98 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
         matrixStore.setShowTicketFoundBox(true);
       }
     }
+  },
+  segmentedRouteFinder: () => {
+    const matrixStore = get();
+    const dataMatrix = matrixStore.trainData;
+    const segmentedDestinationStation = matrixStore.segmentedDestinationStation;
+    const segmentedOriginStation = matrixStore.segmentedOriginStation;
+    try {
+      matrixStore.showSegmentedRoute(
+        segmentedOriginStation as string,
+        segmentedDestinationStation as string,
+        dataMatrix
+      );
+    } catch (e: any) {
+      console.log(e);
+    }
+  },
+  findSegmentedRoute: (
+    start: number,
+    end: number,
+    dataMatrix: any[][]
+  ): number[] => {
+    const queue: number[][] = [[start]];
+    const visited: Set<string> = new Set();
+
+    while (queue.length > 0) {
+      const path = queue.shift()!;
+      const last = path[path.length - 1];
+
+      if (last === end) return path;
+
+      for (let next = 0; next < dataMatrix.length; next++) {
+        const edge = dataMatrix[last][next];
+
+        if (
+          edge &&
+          Array.isArray(edge) &&
+          edge.length > 0 &&
+          !path.includes(next)
+        ) {
+          const newPath = [...path, next];
+          const key = newPath.join("-");
+          if (!visited.has(key)) {
+            queue.push(newPath);
+            visited.add(key);
+          }
+        }
+      }
+    }
+
+    return []; // No path found
+  },
+  showSegmentedRoute(fromCity: string, toCity: string, dataMatrix: any[][]) {
+    let segmentedArray = [];
+    const matrixStore = get();
+    const trainStore = useTrainStore.getState();
+    const routeList = trainStore.routeList;
+    const setSegmentedSeatArray = matrixStore.setSegmentedSeatArray;
+    const startIndex = routeList.indexOf(fromCity);
+    const endIndex = routeList.indexOf(toCity);
+
+    if (startIndex === -1 || endIndex === -1) {
+      console.error("Invalid city name");
+      return;
+    }
+
+    const path = matrixStore.findSegmentedRoute(
+      startIndex,
+      endIndex,
+      dataMatrix
+    );
+
+    if (path.length === 0) {
+      console.log(`No segmented route found from ${fromCity} to ${toCity}.`);
+      return;
+    }
+
+    console.log(`Segmented route from ${fromCity} to ${toCity}:`);
+    for (let i = 0; i < path.length - 1; i++) {
+      const from = path[i];
+      const to = path[i + 1];
+      // console.log(`- ${routeList[from]} → ${routeList[to]}`);
+      // console.log("  Available seats:", dataMatrix[from][to]);
+      // console.log("<-----Start------>\n\n\n");
+      // console.log(dataMatrix[from][to])
+      // console.log("\n\n\n<-----End----->");
+      const segmentedObject: SeatTypeObject = {
+        fromCity: routeList[from],
+        toCity: routeList[to],
+        seatsArr: dataMatrix[from][to],
+      };
+      segmentedArray.push(segmentedObject);
+    }
+    setSegmentedSeatArray(segmentedArray);
   },
 }));
