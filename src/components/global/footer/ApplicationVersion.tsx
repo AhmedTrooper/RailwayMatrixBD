@@ -1,44 +1,36 @@
 import { useApplicationStore } from "@/store/ApplicationStore";
-import { addToast, Alert } from "@heroui/react";
-import { getVersion } from "@tauri-apps/api/app";
-import { useEffect } from "react";
+import { Alert } from "@heroui/react";
 
 export default function ApplicationVersion() {
   const applicationVersion = useApplicationStore(
     (state) => state.applicationVersion
   );
-  const setApplicationVersion = useApplicationStore(
-    (state) => state.setApplicationVersion
+  const isUpdateAvailable = useApplicationStore(
+    (state) => state.isUpdateAvailable
   );
-
-  const fetchApplicationVersion = async () => {
-    try {
-      const appVersion = await getVersion();
-      setApplicationVersion(appVersion);
-      addToast({
-        title: "Version Info",
-        description: `Application version is : ${appVersion}`,
-        color: "success",
-        timeout: 200,
-      });
-    } catch (e) {
-      addToast({
-        title: "Version Error",
-        description: "Application version information retrival failed!",
-        color: "danger",
-        timeout: 200,
-      });
-    }
-  };
-
-  useEffect(() => {
-    fetchApplicationVersion();
-  });
+  const onlineVersion = useApplicationStore((state) => state.onlineVersion);
 
   return (
     <div>
-      {applicationVersion && (
-        <Alert color="success">{applicationVersion}</Alert>
+      {applicationVersion && isUpdateAvailable && (
+        <Alert
+          className="h-fit"
+          color={isUpdateAvailable ? "danger" : "success"}
+          variant="faded"
+        >
+          Current version : {applicationVersion}, Update available of version :{" "}
+          {onlineVersion}
+        </Alert>
+      )}
+
+      {applicationVersion && !isUpdateAvailable && (
+        <Alert
+          className="h-fit"
+          color={isUpdateAvailable ? "danger" : "success"}
+          variant="faded"
+        >
+          Current version : {applicationVersion}
+        </Alert>
       )}
     </div>
   );

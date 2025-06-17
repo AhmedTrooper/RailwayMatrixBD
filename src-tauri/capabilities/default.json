@@ -2,9 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": [
-    "main"
-  ],
+  "windows": ["main"],
   "permissions": [
     "core:default",
     "opener:default",
@@ -20,6 +18,9 @@
       "allow": [
         {
           "url": "https://railspaapi.shohoz.com/"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/"
         }
       ],
       "deny": [
@@ -28,6 +29,5 @@
         }
       ]
     }
-    
   ]
 }

@@ -20,6 +20,7 @@
     "@heroui/divider": "^2.2.14",
     "@heroui/dropdown": "^2.3.20",
     "@heroui/form": "^2.1.19",
+    "@heroui/navbar": "^2.2.19",
     "@heroui/react": "^2.7.9",
     "@heroui/spinner": "^2.2.17",
     "@heroui/table": "^2.2.19",

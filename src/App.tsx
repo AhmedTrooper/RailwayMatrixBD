@@ -7,9 +7,10 @@ import useOsInfoStore from "./store/osInfoStore";
 import { useStationStore } from "./store/stationListStore";
 import { useJourneyStore } from "./store/journeyStore";
 import { useTrainListStore } from "./store/trainListStore";
-import MobileMenuBar from "./components/global/menubar/MobileMenuBar";
 import clsx from "clsx";
 import Footer from "./components/global/footer/Footer";
+import { useApplicationStore } from "./store/ApplicationStore";
+import MobileMenuBar from "./components/global/menubar/MobileMenuBar";
 
 function App() {
   const dark = useThemeStore((state) => state.dark);
@@ -18,6 +19,7 @@ function App() {
   const isMobileOS = useOsInfoStore((state) => state.isMobileOS);
   const stationList = useStationStore((state) => state.stationList);
   const trainList = useTrainListStore((state) => state.trainList);
+  const detectUpdate = useApplicationStore((state) => state.detectUpdate);
   const setOriginStationList = useJourneyStore(
     (state) => state.setOriginStationList
   );
@@ -28,10 +30,16 @@ function App() {
     (state) => state.setFormattedTrainList
   );
 
+  const fetchApplicationVersion = useApplicationStore(state=>state.fetchApplicationVersion);
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") setDark(true);
   }, [setDark]);
+
+  useEffect(()=>{
+    fetchApplicationVersion();
+  })
 
   useEffect(() => {
     detectOS();
@@ -66,15 +74,19 @@ function App() {
     detectOS,
   ]);
 
-  // useEffect(() => {
-  //   const handleContextMenu = (event: MouseEvent) => {
-  //     event.preventDefault();
-  //   };
-  //   document.addEventListener("contextmenu", handleContextMenu);
-  //   return () => {
-  //     document.removeEventListener("contextmenu", handleContextMenu);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const handleContextMenu = (event: MouseEvent) => {
+      event.preventDefault();
+    };
+    document.addEventListener("contextmenu", handleContextMenu);
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
+
+  useEffect(() => {
+    detectUpdate();
+  });
 
   return (
     <div
@@ -87,9 +99,8 @@ function App() {
     >
       {!isMobileOS && <MenuBar />}
       {isMobileOS && <MobileMenuBar />}
+
       <Outlet />
-      {/* <Button onPress={ showObjectDetails}>Get Object Info</Button> */}
-      {/* <SegmentedRoute/> */}
       {!isMobileOS && <Footer />}
     </div>
   );

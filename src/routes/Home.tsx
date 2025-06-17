@@ -14,8 +14,10 @@ import { useEffect } from "react";
 
 export default function Home() {
   let showTicketFoundBox = useMatrixStore((state) => state.showTicketFoundBox);
-  let showTicketNotFoundBox = useMatrixStore((state) => state.showTicketNotFoundBox);
-  const routeList = useTrainStore(state=>state.routeList);
+  let showTicketNotFoundBox = useMatrixStore(
+    (state) => state.showTicketNotFoundBox
+  );
+  const routeList = useTrainStore((state) => state.routeList);
 
   let dummyMatrixVisible = useMatrixStore((state) => state.dummyMatrixVisible);
   let hasSearchedForTicket = useMatrixStore(
@@ -29,14 +31,15 @@ export default function Home() {
   return (
     <div className="p-4  grid justify-items-center gap-2">
       <TrainForm />
-     { <TrainDetails/>}
+      {<TrainDetails />}
       {journeyDate && userTrainName && <UserIsReadyToFindTicket />}
-   
+
       {showTicketNotFoundBox && <TicketNotFound />}
       {dummyMatrixVisible && <DummyMatrixBox />}
       {showTicketFoundBox && <TicketNumber />}
+      {!isEmpty(routeList) && showTicketFoundBox && <SegmentedRoute />}
+
       {<MatrixBox />}
-         {!isEmpty(routeList) && showTicketFoundBox && <SegmentedRoute/>}
     </div>
   );
 }

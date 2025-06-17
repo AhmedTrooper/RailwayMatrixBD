@@ -1,8 +1,8 @@
 import { SeatType } from "@/interface/store/SeatTypeInterface";
 import { useJourneyStore } from "@/store/journeyStore";
 import { useMatrixStore } from "@/store/matrixStore";
-import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { Card, CardBody,  CardHeader } from "@heroui/card";
+import { ArrowDown} from "lucide-react";
 
 export default function SegmentedRouteList() {
   const formattedDate = useJourneyStore((state) => state.formattedJourneyDate);
@@ -23,7 +23,7 @@ export default function SegmentedRouteList() {
               <ArrowDown />
               <p>{route.toCity}</p>
             </CardHeader>
-            <CardBody className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center">
+            <CardBody className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-4">
             
 
               {route.seatsArr.map((seat: SeatType, idx: number) => (
