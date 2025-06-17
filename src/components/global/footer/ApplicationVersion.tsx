@@ -2,6 +2,8 @@ import { useApplicationStore } from "@/store/ApplicationStore";
 import { Alert } from "@heroui/react";
 
 export default function ApplicationVersion() {
+  const updateMetadata = useApplicationStore((state) => state.updateMetadata);
+    const release_url = updateMetadata?.release_url;
   const applicationVersion = useApplicationStore(
     (state) => state.applicationVersion
   );
@@ -12,14 +14,14 @@ export default function ApplicationVersion() {
 
   return (
     <div>
-      {applicationVersion && isUpdateAvailable && (
+      {applicationVersion && isUpdateAvailable && release_url && (
         <Alert
           className="h-fit"
           color={isUpdateAvailable ? "danger" : "success"}
           variant="faded"
         >
-          Current version : {applicationVersion}, Update available of version :{" "}
-          {onlineVersion}
+         <a target="_blank" href={release_url}> Current version : {applicationVersion}, Update available of version :{" "}
+          {onlineVersion}</a>
         </Alert>
       )}
 

@@ -70,6 +70,7 @@ export const useApplicationStore = create<ApplicationInformation>(
         const setApplicationVersion = ApplicationStore.setApplicationVersion;
         const appVersion = await getVersion();
         setApplicationVersion(appVersion);
+        
       } catch (e) {
         addToast({
           title: "Version Error",

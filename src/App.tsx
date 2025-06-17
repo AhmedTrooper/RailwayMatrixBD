@@ -30,16 +30,18 @@ function App() {
     (state) => state.setFormattedTrainList
   );
 
-  const fetchApplicationVersion = useApplicationStore(state=>state.fetchApplicationVersion);
+  const fetchApplicationVersion = useApplicationStore(
+    (state) => state.fetchApplicationVersion
+  );
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") setDark(true);
   }, [setDark]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchApplicationVersion();
-  })
+  });
 
   useEffect(() => {
     detectOS();
@@ -74,15 +76,15 @@ function App() {
     detectOS,
   ]);
 
-  useEffect(() => {
-    const handleContextMenu = (event: MouseEvent) => {
-      event.preventDefault();
-    };
-    document.addEventListener("contextmenu", handleContextMenu);
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleContextMenu = (event: MouseEvent) => {
+  //     event.preventDefault();
+  //   };
+  //   document.addEventListener("contextmenu", handleContextMenu);
+  //   return () => {
+  //     document.removeEventListener("contextmenu", handleContextMenu);
+  //   };
+  // }, []);
 
   useEffect(() => {
     detectUpdate();

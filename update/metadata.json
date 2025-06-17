@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0",
+  "version": "0.6.0",
   "release_date": "2025-06-17",
   "features": ["Segmented Route Added", "Update section", "New trains added"],
   "fixed_errors": ["Cox's Bazar spelling"],
