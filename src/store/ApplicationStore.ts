@@ -46,6 +46,7 @@ export const useApplicationStore = create<ApplicationInformation>(
           ApplicationStore.errorFoundWhileUpdateChecking;
         if (!errorFoundWhileUpdateChecking) {
           const setIsUpdateAvailable = ApplicationStore.setIsUpdateAvailable;
+          console.log(applicationVersion + " : " + onlineVersion);
           if (
             applicationVersion &&
             onlineVersion &&
@@ -70,7 +71,6 @@ export const useApplicationStore = create<ApplicationInformation>(
         const setApplicationVersion = ApplicationStore.setApplicationVersion;
         const appVersion = await getVersion();
         setApplicationVersion(appVersion);
-        
       } catch (e) {
         addToast({
           title: "Version Error",

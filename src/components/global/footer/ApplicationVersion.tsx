@@ -20,7 +20,7 @@ export default function ApplicationVersion() {
           color={isUpdateAvailable ? "danger" : "success"}
           variant="faded"
         >
-         <a target="_blank" href={release_url}> Current version : {applicationVersion}, Update available of version :{" "}
+         <a target="_blank" href={release_url}> Current version : {applicationVersion}, Available version :{" "}
           {onlineVersion}</a>
         </Alert>
       )}

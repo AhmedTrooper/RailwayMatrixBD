@@ -10,7 +10,7 @@ export default function RouteInformation() {
   const trainRouteInformationListLength = userTrainRouteInformationList.length;
 
   return (
-    <div className="grid gap-5 md:w-2/3 lg:w-3/5 justify-self-center max-h-[60vh] overflow-auto p-4">
+    <div className="grid gap-5 w-60 sm:w-96 justify-self-center max-h-[60vh] overflow-auto p-4">
       {userTrainRouteInformationList.map((route, index) => (
         <div
           key={index}
@@ -31,18 +31,18 @@ export default function RouteInformation() {
             </CardHeader>
             <CardBody className="grid sm:grid-cols-2">
               {route.arrival_time && (
-                <div>Arrival time : {route.arrival_time}</div>
+                <div><span className="text-green-700">Arrival time</span> : {route.arrival_time}</div>
               )}
               {route.departure_time && (
-                <div>Departure time : {route.departure_time}</div>
+                <div><span className="text-red-700">Departure time </span>: {route.departure_time}</div>
               )}
 
-              {route.duration && <div>Duration : {route.duration} min</div>}
+              {route.duration && <div><span className="text-blue-700">Duration</span> : {route.duration} min</div>}
               {route.halt && <div>Halt : {route.halt} min</div>}
             </CardBody>
             {(index === 0 || index === trainRouteInformationListLength - 1) && (
               <CardFooter>
-                {index === 0 ? "Starting Point" : "Ending point"}
+                {index === 0 ? <span className="text-violet-600">Starting Point</span> : <span className="text-orange-700">Ending point</span>}
               </CardFooter>
             )}
           </Card>

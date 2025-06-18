@@ -12,7 +12,7 @@ import ThemeToggleButton from "@/ui/ThemeToggleButton";
 import { Menu, X } from "lucide-react";
 import clsx from "clsx";
 import { CiWarning } from "react-icons/ci";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaYoutube } from "react-icons/fa";
 import { useApplicationStore } from "@/store/ApplicationStore";
 
 export default function MobileMenuBar() {
@@ -107,6 +107,18 @@ export default function MobileMenuBar() {
               </Button>
             </Link>
           )}
+        </NavbarMenuItem>
+        <NavbarMenuItem>
+           <a
+           className="text-white cursor-pointer grid grid-cols-2 items-center gap-2"
+                      target="_blank"
+                      href="https://www.youtube.com/@AhmedTrooper"
+                    >
+                      Tutorial : {" "}
+                      <span>
+                        <FaYoutube />
+                      </span>
+                    </a>
         </NavbarMenuItem>
         <NavbarMenuItem>
           <a

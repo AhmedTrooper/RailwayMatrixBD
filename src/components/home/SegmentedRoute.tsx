@@ -17,7 +17,7 @@ export default function SegmentedRoute(){
     
     
     return(<div
-     className="segmented-route sm:w-auto sm:grid-cols-2 grid p-4  justify-items-center  rounded-md w-full gap-4 mt-4 mb-4">
+     className="segmented-route w-66 sm:w-96 sm:grid-cols-2 grid p-4  justify-items-center  rounded-md  gap-4 mt-4 mb-4">
         <h1 className="text-blue-600 font-bold text-xl text-center sm:col-span-2">Check Ticket Availability</h1>
 {!isEmpty(routeList) && <SegmentedOriginStationDropdown/>}
 {!isEmpty(routeList) && <SegmentedDestinationStationDropdown/>}

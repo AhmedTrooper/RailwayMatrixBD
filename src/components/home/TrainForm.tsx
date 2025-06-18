@@ -53,7 +53,9 @@ export default function TrainForm() {
 
   return (
     <div className="grid justify-items-center sm:grid-cols-2  gap-2 h-fit md:w-3/5">
-      <OriginStationDropDown />
+     
+      <div className="trip-plan-form grid justify-items-center sm:w-96 sm:col-span-2 sm:grid-cols-2  gap-2 h-fit">
+ <OriginStationDropDown />
       <DestinationStationDropDown />
       <DatePickerComponent />
       <Button
@@ -66,6 +68,7 @@ export default function TrainForm() {
       >
         Find Trains
       </Button>
+      </div>
       {!isEmpty(userTrainList) && <UserTrainListComponent />}
 
       {!isTrainFetchingLoading &&
@@ -79,7 +82,7 @@ export default function TrainForm() {
         originStation === destinationStation && (
           <Alert
             color="warning"
-            className="sm:col-span-2"
+            className="sm:col-span-2 w-full sm:w-96"
           >
             Origin and Destination must be different!
           </Alert>
@@ -94,14 +97,14 @@ export default function TrainForm() {
 
       {userTrainName && !journeyDate && <OnlyTrainSelectionError />}
 
-      <div className="mt-4 gap-4 w-full grid sm:grid-cols-2 sm:col-span-2">
+      <div className="mt-4 gap-4 w-full sm:w-96 grid sm:grid-cols-2 sm:col-span-2">
         <MannualTrainSelection />
         <DatePickerComponent />
       </div>
 
       <div
         className={clsx(
-          "grid mt-4 gap-4 sm:col-span-2 sm:grid-cols-2 w-full",
+          "grid mt-4 gap-4 sm:col-span-2 sm:grid-cols-2 w-60 sm:w-96",
           {}
         )}
       >
@@ -119,7 +122,7 @@ export default function TrainForm() {
             })}
           >
             <Button
-              className="self-center justify-self-center  p-7 font-bold w-full bg-red-500 sm:col-span-2"
+              className="self-center justify-self-center w-32 sm:w-52  p-7 font-bold  bg-red-500 sm:col-span-2"
               color="primary"
               onPress={() => {
                 setShowProperJourneyInformationAlert(false);

@@ -17,7 +17,7 @@ export default function JourneyInfo() {
 
   return (
     <Card
-      className={clsx("w-full sm:col-span-2 mt-6", {
+      className={clsx("w-60 sm:col-span-2 mt-6 sm:w-96", {
         "border border-amber-600":
           userTrainName && !(userTrainName && formattedJuourneyDate),
       })}

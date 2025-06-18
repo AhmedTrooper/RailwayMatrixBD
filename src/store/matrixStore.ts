@@ -227,6 +227,7 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
     const setSegmentedSeatArray = matrixStore.setSegmentedSeatArray;
     const startIndex = routeList.indexOf(fromCity);
     const endIndex = routeList.indexOf(toCity);
+    setSegmentedSeatArray([]);
     
 
     if (startIndex === -1 || endIndex === -1) {
@@ -284,6 +285,7 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
                 timeout: 1000,
               });
     } else {
+       setSegmentedRouteFound(false);
        addToast({
                 title: "No Route Found",
                 description: `No route found`,

@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    heroui_tauriv2_lib::run()
+    railwaymatrix_lib::run()
 }
