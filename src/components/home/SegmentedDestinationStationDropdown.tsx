@@ -16,7 +16,7 @@ export default function SegmentedDestinationStationDropdown() {
     [routeList]);
 
     return (
-        <div>
+        <div className="sm:col-span-2">
             <Autocomplete label="Destination Station">
                 {formattedRouteList.map(item => (
                     <AutocompleteItem key={item.key} onPress={() => setSegmentedDestinationStation(item.label as string)}>

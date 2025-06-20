@@ -1,10 +1,10 @@
 {
-  "version": "0.6.0",
-  "release_date": "2025-06-17",
-  "features": ["Segmented Route Added", "Update section", "New trains added"],
-  "fixed_errors": ["Cox's Bazar spelling"],
-  "notes": "This release focuses on various new sections",
-  "release_url": "https://github.com/AhmedTrooper/RailwayMatrixBD/releases/tag/v0.6.0",
+  "version": "0.7.0",
+  "release_date": "2025-06-20",
+  "features": ["Date secured", "UI updated"],
+  "fixed_errors": [],
+  "notes": "This release focuses on minor update",
+  "release_url": "https://github.com/AhmedTrooper/RailwayMatrixBD/releases/tag/v0.7.0",
   "author": "AhmedTrooper",
   "severity": "medium",
   "platforms": ["windows", "android"]
