@@ -11,7 +11,7 @@ export default function MannualTrainSelection() {
   return (
     <Autocomplete
       label={userTrainName ? userTrainName : "Select Train Manually"}
-      className=""
+      className="sm:col-span-2"
     >
       {items.map((item) => (
         <AutocompleteItem

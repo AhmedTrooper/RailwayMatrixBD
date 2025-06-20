@@ -1,5 +1,6 @@
 import { useJourneyStore } from "@/store/journeyStore";
 import { DatePicker, DateValue } from "@heroui/react";
+import { getLocalTimeZone, today } from "@internationalized/date";
 
 export default function DatePickerComponent() {
   const journeyDateGenerator = useJourneyStore(
@@ -11,7 +12,9 @@ export default function DatePickerComponent() {
     <DatePicker
       className="max-w-full"
       label="Journey Date"
-      value={pickedDate}
+      //@ts-ignore
+      value={pickedDate ? pickedDate : today(getLocalTimeZone())}
+      minValue={today(getLocalTimeZone())}
       onChange={(newDate: DateValue | null) => {
         journeyDateGenerator(newDate);
         setPickedDate(newDate);

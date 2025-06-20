@@ -81,4 +81,5 @@ export const useJourneyStore = create<JourneyState>((set, get) => ({
     }`;
     set({ formattedJourneyDate: tempFormatedDate, journeyDate: tempDate });
   },
+  
 }));

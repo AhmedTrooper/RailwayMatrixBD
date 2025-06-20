@@ -99,12 +99,12 @@ export default function TrainForm() {
 
       <div className="mt-4 gap-4 w-full sm:w-96 grid sm:grid-cols-2 sm:col-span-2">
         <MannualTrainSelection />
-        <DatePickerComponent />
+        <div className="sm:col-span-2"><DatePickerComponent /></div>
       </div>
 
       <div
         className={clsx(
-          "grid mt-4 gap-4 sm:col-span-2 sm:grid-cols-2 w-60 sm:w-96",
+          "grid mt-4 gap-4 sm:col-span-2  w-60 sm:w-96",
           {}
         )}
       >

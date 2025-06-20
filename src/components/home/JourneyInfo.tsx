@@ -23,15 +23,17 @@ export default function JourneyInfo() {
       })}
     >
       <CardBody>
-        <div className="grid sm:grid-cols-2 gap-4">
-          {userTrainName && (
-            <div className="text-green-600 font-bold mt-2 mb-2">
-              <Alert color="success">{userTrainName}</Alert>
+        <div className="grid sm:grid-cols-2">
+          
+          {formattedJuourneyDate && (
+            <div className="mt-2 mb-2 sm:col-span-2 font-bold">
+              <Alert color="success" variant="faded">{formattedJuourneyDate}</Alert>
             </div>
           )}
-          {formattedJuourneyDate && (
-            <div className="mt-2 mb-2">
-              <Alert color="success">{formattedJuourneyDate}</Alert>
+
+          {userTrainName && (
+            <div className="text-green-600 font-bold mt-2  sm:col-span-2 mb-4">
+              <Alert color="primary">{userTrainName}</Alert>
             </div>
           )}
 
