@@ -25,7 +25,7 @@ export default function UpdatePage() {
 
           {!isEmpty(updateMetadata.fixed_errors) && (
             <div className="border p-2 border-zinc-900 rounded-md dark:border-zinc-700 mt-2">
-              Features:
+              Fixed errors:
               <ul>
                 {updateMetadata.fixed_errors.map((fxError, index) => (
                   <li key={index}>{fxError}</li>
