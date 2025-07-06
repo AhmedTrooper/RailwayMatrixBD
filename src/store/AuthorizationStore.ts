@@ -40,10 +40,6 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
           mobile_number: mobileNumber,
           password: loginPassword,
         };
-        // const payLoad = {
-        //   mobile_number: "01865043081",
-        //   password: "Sohoz@Passcode!",
-        // };
 
         // const fetchFailed = false;
         if (
