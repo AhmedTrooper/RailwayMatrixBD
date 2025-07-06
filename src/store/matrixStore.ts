@@ -7,10 +7,11 @@ import { fetch } from "@tauri-apps/plugin-http";
 import { addToast } from "@heroui/react";
 import { SeatTypeObject } from "@/interface/SeatTypesArray";
 import { isEmpty } from "lodash";
+import { useAuthorizationStore } from "./AuthorizationStore";
 
 export const useMatrixStore = create<MatrixStore>((set, get) => ({
-  segmentedRouteFound:true,
-setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
+  segmentedRouteFound: true,
+  setSegmentedRouteFound: (srf: boolean) => set({ segmentedRouteFound: srf }),
   segmentedOriginStation: null,
   setSegmentedOriginStation: (s: string | null) =>
     set({ segmentedOriginStation: s }),
@@ -48,6 +49,9 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
       const matrixStore = get();
       const trainStore = useTrainStore.getState();
       const journeyStore = useJourneyStore.getState();
+      const authorizationStore = useAuthorizationStore.getState();
+      const setSegmentedRouteFound = matrixStore.setSegmentedRouteFound;
+      const setSegmentedSeatArray = matrixStore.setSegmentedSeatArray;
 
       let ticketNumber = 0;
       const {
@@ -68,6 +72,9 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
       setHasSearchedForTicket(true);
       setDummyMatrixVisible(false);
       setShowTicketNotFoundBox(false);
+      setSegmentedRouteFound(false);
+      setSegmentedSeatArray([]);
+      matrixStore.setSearchedForSegmentedRoute(false);
 
       if (hasSearchedForTicket) setHasSearchedForTicket(false);
       if (showTicketFoundBox) setShowTicketFoundBox(false);
@@ -92,7 +99,11 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
 
           const task = (async () => {
             try {
-              const res = await fetch(url);
+              const res = await fetch(url, {
+                headers: {
+                  Authorization: `Bearer ${authorizationStore.bearerToken}`,
+                },
+              });
               const json = await res.json();
               const train = json?.data?.trains?.find(
                 (t: any) => t?.trip_number === selectedTrainName
@@ -160,14 +171,15 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
     const segmentedDestinationStation = matrixStore.segmentedDestinationStation;
     const segmentedOriginStation = matrixStore.segmentedOriginStation;
     const setSegmentedRouteFound = matrixStore.setSegmentedRouteFound;
+    matrixStore.setSearchedForSegmentedRoute(true);
     try {
       setSegmentedRouteFound(false);
       addToast({
-                title: "Request sent",
-                description: "Segmented route requested",
-                color: "primary",
-                timeout: 300,
-              });
+        title: "Request sent",
+        description: "Segmented route requested",
+        color: "primary",
+        timeout: 300,
+      });
       matrixStore.showSegmentedRoute(
         segmentedOriginStation as string,
         segmentedDestinationStation as string,
@@ -176,11 +188,11 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
     } catch (e: any) {
       console.log(e);
       addToast({
-                title: "Error Occurred",
-                description: "Segmented route requested failed",
-                color: "danger",
-                timeout: 1000,
-              });
+        title: "Error Occurred",
+        description: "Segmented route requested failed",
+        color: "danger",
+        timeout: 1000,
+      });
     }
   },
   findSegmentedRoute: (
@@ -228,16 +240,15 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
     const startIndex = routeList.indexOf(fromCity);
     const endIndex = routeList.indexOf(toCity);
     setSegmentedSeatArray([]);
-    
 
     if (startIndex === -1 || endIndex === -1) {
       // console.error("Invalid city name");
       addToast({
-                title: "City Error",
-                description: "Invalid city name",
-                color: "warning",
-                timeout: 1000,
-              });
+        title: "City Error",
+        description: "Invalid city name",
+        color: "warning",
+        timeout: 1000,
+      });
       return;
     }
 
@@ -250,12 +261,12 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
     if (path.length === 0) {
       setSegmentedRouteFound(false);
       // console.log(`No segmented route found from ${fromCity} to ${toCity}.`);
-       addToast({
-                title: "Not Found",
-                description: `No segmented route found from ${fromCity} to ${toCity}.`,
-                color: "danger",
-                timeout: 1000,
-              });
+      addToast({
+        title: "Not Found",
+        description: `No segmented route found from ${fromCity} to ${toCity}.`,
+        color: "danger",
+        timeout: 1000,
+      });
       return;
     }
 
@@ -276,25 +287,25 @@ setSegmentedRouteFound:(srf:boolean)=>set({segmentedRouteFound:srf}),
       segmentedArray.push(segmentedObject);
     }
     setSegmentedSeatArray(segmentedArray);
-    if(!isEmpty(segmentedArray)){
+    if (!isEmpty(segmentedArray)) {
       setSegmentedRouteFound(true);
       addToast({
-                title: "Found",
-                description: `segmented route found successfully for ${fromCity} to ${toCity}.`,
-                color: "success",
-                timeout: 1000,
-              });
+        title: "Found",
+        description: `segmented route found successfully for ${fromCity} to ${toCity}.`,
+        color: "success",
+        timeout: 1000,
+      });
     } else {
-       setSegmentedRouteFound(false);
-       addToast({
-                title: "No Route Found",
-                description: `No route found`,
-                color: "warning",
-                timeout: 2000,
-              });
+      setSegmentedRouteFound(false);
+      addToast({
+        title: "No Route Found",
+        description: `No route found`,
+        color: "warning",
+        timeout: 2000,
+      });
     }
-
-    
-    
   },
+  searchedForSegmentedRoute: false,
+  setSearchedForSegmentedRoute: (value) =>
+    set({ searchedForSegmentedRoute: value }),
 }));

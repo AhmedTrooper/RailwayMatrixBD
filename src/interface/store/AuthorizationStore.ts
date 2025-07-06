@@ -1,5 +1,4 @@
 export interface AuthorizationStoreInterface {
-
   mobileNumber: string | null;
   loginPassword: string | null;
   bearerToken: string | null;
@@ -12,8 +11,9 @@ export interface AuthorizationStoreInterface {
   setLoginFailed: (value: boolean) => void;
   loginUrl: string;
   fetchToken: () => Promise<void>;
-  editPasswordEnable:boolean;
+  editPasswordEnable: boolean;
   setEditPasswordEnable: (value: boolean) => void;
+  editPassword: () => void;
 }
 
 export const inValidAuthData = [null, undefined, ""];

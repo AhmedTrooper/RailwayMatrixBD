@@ -16,8 +16,8 @@ export default function LoginComponent() {
   const editPasswordEnable = useAuthorizationStore(
     (state) => state.editPasswordEnable
   );
-  const setEditPasswordEnable = useAuthorizationStore(
-    (state) => state.setEditPasswordEnable
+  const editPassword = useAuthorizationStore(
+    (state) => state.editPassword
   );
   return (
     <Card className="p-4">
@@ -29,14 +29,12 @@ export default function LoginComponent() {
         <CardHeader className="grid">
           <Alert color="success">You are already loged in!</Alert>
           <div className="m-2 p-2">
-            <Checkbox
-              checked={editPasswordEnable}
-              onChange={() => setEditPasswordEnable(!editPasswordEnable)}
+            <Button
+              onPress={editPassword}
+              color={editPasswordEnable ? "danger" : "primary"}
             >
-              {!editPasswordEnable
-                ? "Enable Password Edit"
-                : "Disable Password Edit"}
-            </Checkbox>
+              {!editPasswordEnable ? "Enable Re-Login" : "Disable Re-Login"}
+            </Button>
           </div>
         </CardHeader>
       )}
@@ -48,7 +46,7 @@ export default function LoginComponent() {
           onChange={(e) => setMobileNumber(e.target.value.trim())}
           value={mobileNumber ? mobileNumber : ""}
         />
-        {loginPassword && loginPassword !== "" && isLoggedIn && (
+        {!editPasswordEnable && !isLoggedIn && (
           <Input
             type="password"
             placeholder="Enter your password"
@@ -60,16 +58,31 @@ export default function LoginComponent() {
           />
         )}
 
-        
-        <Button
-          color="primary"
-          onPress={fetchToken}
-        >
-          Login
-        </Button>
+        {editPasswordEnable && (
+          <Input
+            type="password"
+            placeholder="Re enter your password"
+            onChange={(e) => setLoginPassword(e.target.value.trim())}
+          />
+        )}
+
+        {!editPasswordEnable && !isLoggedIn && (
+          <Button
+            color="primary"
+            onPress={fetchToken}
+          >
+            Login
+          </Button>
+        )}
+        {editPasswordEnable && (
+          <Button
+            color="primary"
+            onPress={fetchToken}
+          >
+            Re-Login
+          </Button>
+        )}
       </CardBody>
-      <h1>Mobile: {mobileNumber?.toString()}</h1>
-      <h1>Password : {`${loginPassword}`}</h1>
     </Card>
   );
 }

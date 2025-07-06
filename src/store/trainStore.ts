@@ -9,6 +9,7 @@ import { addToast } from "@heroui/react";
 import isOnline from "is-online";
 import { isEmpty } from "lodash";
 import { TrainInformation } from "@/interface/TrainInfo";
+import { useAuthorizationStore } from "./AuthorizationStore";
 
 type UserTrainStore = {
   userTrainList: string[] | [];
@@ -95,9 +96,13 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
   fetchUserTrainList: async () => {
     try {
       const journeyStore = useJourneyStore.getState();
-
+      const authorizationStore = useAuthorizationStore.getState();
       const tempUrl = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${journeyStore.originStation}&to_city=${journeyStore.destinationStation}&date_of_journey=${journeyStore.formattedJourneyDate}&seat_class=SHULOV`;
-      let response = await fetch(tempUrl);
+      let response = await fetch(tempUrl, {
+        headers: {
+          Authorization: `Bearer ${authorizationStore.bearerToken}`,
+        },
+      });
       if (response.status === 200) {
         addToast({
           title: "Request successfull",

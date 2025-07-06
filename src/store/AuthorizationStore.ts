@@ -14,7 +14,7 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
       mobileNumber: localStorage.getItem("mobileNumber") || null,
       loginPassword: localStorage.getItem("loginPassword") || null,
       bearerToken: localStorage.getItem("bearerToken") || null,
-      isLoggedIn: localStorage.getItem("isLoggedIn") === "true",
+      isLoggedIn: localStorage.getItem("isLoggedIn") === "true" ? true : false,
       loginFailed: false,
       setMobileNumber: (value) => set({ mobileNumber: value }),
       setLoginPassword: (value) => set({ loginPassword: value }),
@@ -22,7 +22,8 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
       setIsLoggedIn: (value) => set({ isLoggedIn: value }),
       setLoginFailed: (value) => set({ loginFailed: value }),
       loginUrl: "https://railspaapi.shohoz.com/v1.0/web/auth/sign-in",
-      editPasswordEnable: false,
+      editPasswordEnable:
+        localStorage.getItem("editPasswordEnabled") === "true" ? true : false,
       setEditPasswordEnable: (value: boolean) =>
         set({ editPasswordEnable: value }),
       fetchToken: async () => {
@@ -60,6 +61,7 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
 
         localStorage.setItem("mobileNumber", mobileNumber?.trim() as string);
         localStorage.setItem("loginPassword", loginPassword?.trim() as string);
+        localStorage.setItem("editPasswordEnabled", String(true));
 
         //If form data is valid....
         try {
@@ -72,9 +74,9 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
             connectTimeout: 20000,
           });
           const parsedJson = (await response.json()) as ParsedJsonResponse;
-          console.log(parsedJson);
+          // console.log(parsedJson);
           const data = parsedJson["data"] as ResponseData;
-          console.log(data);
+          // console.log(data);
           if (response.status === 200) {
             setBearerToken(data["token"]);
             setIsLoggedIn(true);
@@ -88,9 +90,19 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
               color: "success",
             });
           } else {
+            localStorage.removeItem("bearerToken");
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loginPassword");
+            localStorage.removeItem("editPasswordEnabled");
+            authorizationStore.setEditPasswordEnable(false);
+            authorizationStore.setIsLoggedIn(false);
+            authorizationStore.setBearerToken(null);
+            authorizationStore.setLoginPassword(null);
+
             addToast({
               title: "Login failed",
-              description: "You have loged in successfully...",
+              description:
+                "Check your password or mobile number or try again later",
               timeout: 2000,
               color: "danger",
             });
@@ -98,6 +110,15 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
         } catch {
         } finally {
         }
+      },
+      editPassword: () => {
+        const authorizationStore = get();
+        const setEditPasswordEnable = authorizationStore.setEditPasswordEnable;
+       const editPasswordEnable =  authorizationStore.editPasswordEnable;
+       setEditPasswordEnable(!editPasswordEnable);
+        authorizationStore.setLoginPassword(null);
+        localStorage.removeItem("loginPassword");
+        localStorage.removeItem("editPasswordEnabled");
       },
     };
   }

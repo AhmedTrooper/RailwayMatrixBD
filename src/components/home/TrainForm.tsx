@@ -13,9 +13,11 @@ import MannualTrainSelection from "./MannualTrainSelection";
 import OnlyTrainSelectionError from "./OnlyTrainSelectionError";
 import clsx from "clsx";
 import ProperJourneyInformationAlert from "./ProperJourneyInformationAlert";
+import { useAuthorizationStore } from "@/store/AuthorizationStore";
 
 export default function TrainForm() {
   const userTrainList = useTrainStore((state) => state.userTrainList);
+  const isLoggedIn = useAuthorizationStore(state=>state.isLoggedIn);
 
   const hasTrainBeenSearchedOnce = useTrainStore(
     (state) => state.hasTrainBeenSearchedOnce
@@ -58,7 +60,7 @@ export default function TrainForm() {
  <OriginStationDropDown />
       <DestinationStationDropDown />
       <DatePickerComponent />
-      <Button
+     {isLoggedIn && <Button
         variant="shadow"
         color="primary"
         className="p-7 font-bold w-2/3 "
@@ -67,7 +69,20 @@ export default function TrainForm() {
         }}
       >
         Find Trains
-      </Button>
+      </Button>}
+
+{!isLoggedIn && <Button
+        variant="shadow"
+        color="primary"
+        className="p-7 font-bold w-2/3 "
+        onPress={() => {
+          validateAndFetchTrain();
+        }}
+        disabled
+      >
+        Login required!
+      </Button>}
+
       </div>
       {!isEmpty(userTrainList) && <UserTrainListComponent />}
 
@@ -121,7 +136,7 @@ export default function TrainForm() {
               "sm:col-span-2 w-3/5 justify-self-center": userTrainName,
             })}
           >
-            <Button
+           {isLoggedIn && <Button
               className="self-center justify-self-center w-32 sm:w-52  p-7 font-bold  bg-red-500 sm:col-span-2"
               color="primary"
               onPress={() => {
@@ -140,7 +155,30 @@ export default function TrainForm() {
               }}
             >
               Find Tickets
-            </Button>
+            </Button>}
+
+
+             {!isLoggedIn && <Button
+              className="self-center justify-self-center w-32 sm:w-52  p-7 font-bold  bg-red-500 sm:col-span-2"
+              color="primary"
+              onPress={() => {
+                setShowProperJourneyInformationAlert(false);
+
+                if (userTrainName && journeyDate) {
+                  fetchUserTrainInformation();
+                } else {
+                  addToast({
+                    title: "Date or Train Name error",
+                    description: `Make sure you set both journey date and train name correctly...`,
+                    color: "danger",
+                    timeout: 3000,
+                  });
+                }
+              }}
+               disabled
+            >
+              Login required!
+            </Button>}
           </div>
         }
       </div>
