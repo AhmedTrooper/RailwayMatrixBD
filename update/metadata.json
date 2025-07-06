@@ -1,11 +1,19 @@
 {
-  "version": "0.7.0",
-  "release_date": "2025-06-20",
-  "features": ["Date secured", "UI updated"],
-  "fixed_errors": [],
+  "version": "0.8.0",
+  "release_date": "2025-07-07",
+  "features": [
+    "Authentication added",
+    "Log in is mandatory for train,ticket finding!"
+  ],
+  "fixed_errors": [
+    "No train ot ticket search available!"
+  ],
   "notes": "This release focuses on minor update",
-  "release_url": "https://github.com/AhmedTrooper/RailwayMatrixBD/releases/tag/v0.7.0",
+  "release_url": "https://github.com/AhmedTrooper/RailwayMatrixBD/releases/tag/v0.8.0",
   "author": "AhmedTrooper",
-  "severity": "medium",
-  "platforms": ["windows", "android"]
+  "severity": "strong",
+  "platforms": [
+    "windows",
+    "android"
+  ]
 }
