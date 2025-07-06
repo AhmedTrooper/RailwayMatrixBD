@@ -11,12 +11,12 @@ export default function ProperJourneyInformationAlert() {
         same.
       </Alert>
 
-     
-
-     <Alert variant="bordered" color="success">
-  Or you can manually select your train from the dropdown below.
-</Alert>
-
+      <Alert
+        variant="bordered"
+        color="success"
+      >
+        Or you can manually select your train from the dropdown below.
+      </Alert>
     </div>
   );
 }

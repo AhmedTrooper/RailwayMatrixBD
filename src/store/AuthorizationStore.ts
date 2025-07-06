@@ -114,8 +114,8 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
       editPassword: () => {
         const authorizationStore = get();
         const setEditPasswordEnable = authorizationStore.setEditPasswordEnable;
-       const editPasswordEnable =  authorizationStore.editPasswordEnable;
-       setEditPasswordEnable(!editPasswordEnable);
+        const editPasswordEnable = authorizationStore.editPasswordEnable;
+        setEditPasswordEnable(!editPasswordEnable);
         authorizationStore.setLoginPassword(null);
         localStorage.removeItem("loginPassword");
         localStorage.removeItem("editPasswordEnabled");

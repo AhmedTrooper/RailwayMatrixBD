@@ -24,10 +24,14 @@ export default function JourneyInfo() {
     >
       <CardBody>
         <div className="grid sm:grid-cols-2">
-          
           {formattedJuourneyDate && (
             <div className="mt-2 mb-2 sm:col-span-2 font-bold">
-              <Alert color="success" variant="faded">{formattedJuourneyDate}</Alert>
+              <Alert
+                color="success"
+                variant="faded"
+              >
+                {formattedJuourneyDate}
+              </Alert>
             </div>
           )}
 
@@ -37,14 +41,16 @@ export default function JourneyInfo() {
             </div>
           )}
 
-         {(originStation || destinationStation ) && <div className="grid sm:grid-cols-2 sm:col-span-2 gap-4">
-            <div className="grid justify-items-stretch grid-cols-2">
-              <PersonStanding /> {originStation}
+          {(originStation || destinationStation) && (
+            <div className="grid sm:grid-cols-2 sm:col-span-2 gap-4">
+              <div className="grid justify-items-stretch grid-cols-2">
+                <PersonStanding /> {originStation}
+              </div>
+              <p className="grid justify-items-stretch grid-cols-2">
+                <MapPin /> {destinationStation}
+              </p>
             </div>
-            <p className="grid justify-items-stretch grid-cols-2">
-              <MapPin /> {destinationStation}
-            </p>
-          </div>}
+          )}
         </div>
       </CardBody>
     </Card>

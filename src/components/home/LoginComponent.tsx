@@ -16,9 +16,7 @@ export default function LoginComponent() {
   const editPasswordEnable = useAuthorizationStore(
     (state) => state.editPasswordEnable
   );
-  const editPassword = useAuthorizationStore(
-    (state) => state.editPassword
-  );
+  const editPassword = useAuthorizationStore((state) => state.editPassword);
   return (
     <Card className="p-4">
       {!isLoggedIn && (

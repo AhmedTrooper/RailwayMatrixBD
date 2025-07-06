@@ -17,11 +17,11 @@ export default function TrainDetails() {
     (state) => state.setShowRouteInformation
   );
 
-  const trainInformaton = useTrainStore((state)=>state.trainInformaton);
+  const trainInformaton = useTrainStore((state) => state.trainInformaton);
 
   return (
     <div className="w-full grid">
-      {trainInformaton && <TrainInformation/>}
+      {trainInformaton && <TrainInformation />}
       <Button
         color={!showRouteInformation ? "primary" : "default"}
         className="w-fit p-4 justify-self-center mt-4 mb-4"

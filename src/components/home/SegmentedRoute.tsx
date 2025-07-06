@@ -19,7 +19,7 @@ export default function SegmentedRoute() {
     (state) => state.segmentedRouteFound
   );
 
-   const searchedForSegmentedRoute = useMatrixStore(
+  const searchedForSegmentedRoute = useMatrixStore(
     (state) => state.searchedForSegmentedRoute
   );
   useMatrixStore((state) => state.showTicketFoundBox);
@@ -38,12 +38,12 @@ export default function SegmentedRoute() {
       >
         Check Availability
       </Button>
-      {!isEmpty(segmentedSeatArray) && segmentedRouteFound && searchedForSegmentedRoute && (
-        <SegmentedRouteList />
-      )}
-      {isEmpty(segmentedSeatArray) && !segmentedRouteFound && searchedForSegmentedRoute && (
-        <SegmentedRouteNotFound />
-      )}
+      {!isEmpty(segmentedSeatArray) &&
+        segmentedRouteFound &&
+        searchedForSegmentedRoute && <SegmentedRouteList />}
+      {isEmpty(segmentedSeatArray) &&
+        !segmentedRouteFound &&
+        searchedForSegmentedRoute && <SegmentedRouteNotFound />}
     </div>
   );
 }
