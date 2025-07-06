@@ -1,6 +1,6 @@
 import { useAuthorizationStore } from "@/store/AuthorizationStore";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { Alert, Button, Checkbox, Input } from "@heroui/react";
+import { Alert, Button, Input } from "@heroui/react";
 
 export default function LoginComponent() {
   const fetchToken = useAuthorizationStore((state) => state.fetchToken);

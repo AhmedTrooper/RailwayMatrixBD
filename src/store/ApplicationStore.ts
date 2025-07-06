@@ -46,13 +46,14 @@ export const useApplicationStore = create<ApplicationInformation>(
           ApplicationStore.errorFoundWhileUpdateChecking;
         if (!errorFoundWhileUpdateChecking) {
           const setIsUpdateAvailable = ApplicationStore.setIsUpdateAvailable;
-          console.log(applicationVersion + " : " + onlineVersion);
+          // console.log(applicationVersion + " : " + onlineVersion);
           if (
             applicationVersion &&
             onlineVersion &&
             applicationVersion < onlineVersion
           ) {
             setIsUpdateAvailable(true);
+            ApplicationStore.setShowWarningDialog(true);
           }
         } else {
           addToast({
@@ -60,7 +61,7 @@ export const useApplicationStore = create<ApplicationInformation>(
             description:
               "Error occurred while application was checking for update",
             color: "danger",
-            timeout: 500,
+            timeout: 2000,
           });
         }
       }
@@ -80,5 +81,7 @@ export const useApplicationStore = create<ApplicationInformation>(
         });
       }
     },
+    showWarningDialog: false,
+    setShowWarningDialog: (value) => set({ showWarningDialog: value }),
   })
 );

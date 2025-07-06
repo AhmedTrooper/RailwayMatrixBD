@@ -40,6 +40,12 @@ function App() {
   const isUpdateAvailable = useApplicationStore(
     (state) => state.isUpdateAvailable
   );
+  const setShowWarningDialog = useApplicationStore(
+    (state) => state.setShowWarningDialog
+  );
+  const showWarningDialog = useApplicationStore(
+    (state) => state.showWarningDialog
+  );
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -108,18 +114,41 @@ function App() {
     >
       {!isMobileOS && <MenuBar />}
       {isMobileOS && <MobileMenuBar />}
-      {isUpdateAvailable  && (
-        <div className="w-60 h-fit sm:w-80 grid gap-4  bg-red-600 shadow-lg p-4 shadow-black  z-50 mt-10 justify-self-center rounded-lg">
-          <X className="cursor-pointer" />
-          <h1>You must update the application!This version is no longer usable as
-          severe update available!</h1>
-          <Button color="primary" className="p-6">{updateMetadata?.severity.toUpperCase()} UPDATE</Button>
-                    <Button color="success" className="p-6 flex">
-                      <Download/>
-                      Download Now</Button>
+      {isUpdateAvailable &&
+        updateMetadata?.severity === "high" &&
+        showWarningDialog && (
+          <div className="w-60 h-fit sm:w-80 grid gap-4  dark:bg-zinc-900 shadow-lg p-4 shadow-black  z-50 mt-10 justify-self-center rounded-lg">
+            <X
+              onClick={() => setShowWarningDialog(!showWarningDialog)}
+              className="cursor-pointer text-red-600"
+            />
+            <h1 className="font-bold text-green-600">
+              Application Update Required
+            </h1>
+            <p>
+              This version of the application is no longer supported. A critical
+              update is available.
+              <br />
+              Please update to the latest version to continue using the app.
+            </p>
 
-        </div>
-      )}
+            <Button
+              color="danger"
+              className="p-6"
+            >
+              {updateMetadata?.severity.toUpperCase()}
+            </Button>
+            <a
+              target="_blank"
+              href={
+                updateMetadata.release_url ? updateMetadata.release_url : "/"
+              }
+              className="flex gap-2 w-fir p-3 shadow-lg shadow-black font-bold justify-center bg-green-600 text-white rounded-lg"
+            >
+              <Download /> Download Now
+            </a>
+          </div>
+        )}
 
       <Outlet />
       {!isMobileOS && <Footer />}

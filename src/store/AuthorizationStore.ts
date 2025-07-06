@@ -31,9 +31,9 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
         const mobileNumber = authorizationStore.mobileNumber;
         const loginPassword = authorizationStore.loginPassword;
         const loginUrl = authorizationStore.loginUrl;
-        const tryCount = 0;
-        const maxTry = 3;
-        const responseToken = authorizationStore.bearerToken;
+        // const tryCount = 0;
+        // const maxTry = 3;
+        // const responseToken = authorizationStore.bearerToken;
         const setBearerToken = authorizationStore.setBearerToken;
         const setIsLoggedIn = authorizationStore.setIsLoggedIn;
         const payLoad = {
@@ -45,7 +45,7 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>(
         //   password: "Sohoz@Passcode!",
         // };
 
-        const fetchFailed = false;
+        // const fetchFailed = false;
         if (
           inValidAuthData.includes(mobileNumber) ||
           inValidAuthData.includes(loginPassword)
