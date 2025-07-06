@@ -11,6 +11,8 @@ import clsx from "clsx";
 import Footer from "./components/global/footer/Footer";
 import { useApplicationStore } from "./store/ApplicationStore";
 import MobileMenuBar from "./components/global/menubar/MobileMenuBar";
+import { Download, X } from "lucide-react";
+import { Button } from "@heroui/react";
 
 function App() {
   const dark = useThemeStore((state) => state.dark);
@@ -32,6 +34,11 @@ function App() {
 
   const fetchApplicationVersion = useApplicationStore(
     (state) => state.fetchApplicationVersion
+  );
+
+  const updateMetadata = useApplicationStore((state) => state.updateMetadata);
+  const isUpdateAvailable = useApplicationStore(
+    (state) => state.isUpdateAvailable
   );
 
   useEffect(() => {
@@ -76,15 +83,15 @@ function App() {
     detectOS,
   ]);
 
-  // useEffect(() => {
-  //   const handleContextMenu = (event: MouseEvent) => {
-  //     event.preventDefault();
-  //   };
-  //   document.addEventListener("contextmenu", handleContextMenu);
-  //   return () => {
-  //     document.removeEventListener("contextmenu", handleContextMenu);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const handleContextMenu = (event: MouseEvent) => {
+      event.preventDefault();
+    };
+    document.addEventListener("contextmenu", handleContextMenu);
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
 
   useEffect(() => {
     detectUpdate();
@@ -101,6 +108,18 @@ function App() {
     >
       {!isMobileOS && <MenuBar />}
       {isMobileOS && <MobileMenuBar />}
+      {isUpdateAvailable  && (
+        <div className="w-60 h-fit sm:w-80 grid gap-4  bg-red-600 shadow-lg p-4 shadow-black  z-50 mt-10 justify-self-center rounded-lg">
+          <X className="cursor-pointer" />
+          <h1>You must update the application!This version is no longer usable as
+          severe update available!</h1>
+          <Button color="primary" className="p-6">{updateMetadata?.severity.toUpperCase()} UPDATE</Button>
+                    <Button color="success" className="p-6 flex">
+                      <Download/>
+                      Download Now</Button>
+
+        </div>
+      )}
 
       <Outlet />
       {!isMobileOS && <Footer />}

@@ -9,9 +9,11 @@ export interface ApplicationInformation {
   detectUpdate: () => void;
   onlineVersion: string | null;
   setOnlineVersion: (v: string) => void;
-  updateMetadata:Metadata | null;
-  setUpdateMetadata:(m:Metadata)=>void;
-  errorFoundWhileUpdateChecking:boolean;
-  setErrorFoundWhileUpdateChecking:(status:boolean)=>void;
-  fetchApplicationVersion:()=>void;
+  updateMetadata: Metadata | null;
+  setUpdateMetadata: (m: Metadata) => void;
+  errorFoundWhileUpdateChecking: boolean;
+  setErrorFoundWhileUpdateChecking: (status: boolean) => void;
+  fetchApplicationVersion: () => void;
+  showWarningDialog: boolean;
+  setShowWarningDialog: (status: boolean) => void;
 }
