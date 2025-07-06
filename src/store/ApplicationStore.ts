@@ -44,6 +44,7 @@ export const useApplicationStore = create<ApplicationInformation>(
         const onlineVersion = ApplicationStore.onlineVersion;
         const errorFoundWhileUpdateChecking =
           ApplicationStore.errorFoundWhileUpdateChecking;
+        const setShowWarningDialog = ApplicationStore.setShowWarningDialog;
         if (!errorFoundWhileUpdateChecking) {
           const setIsUpdateAvailable = ApplicationStore.setIsUpdateAvailable;
           // console.log(applicationVersion + " : " + onlineVersion);
@@ -52,8 +53,9 @@ export const useApplicationStore = create<ApplicationInformation>(
             onlineVersion &&
             applicationVersion < onlineVersion
           ) {
+            console.log("Update Available!")
             setIsUpdateAvailable(true);
-            ApplicationStore.setShowWarningDialog(true);
+            setShowWarningDialog(true);
           }
         } else {
           addToast({

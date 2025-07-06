@@ -53,11 +53,18 @@ function App() {
   }, [setDark]);
 
   useEffect(() => {
-    fetchApplicationVersion();
-  });
+    detectOS();
+  }, []);
 
   useEffect(() => {
-    detectOS();
+    fetchApplicationVersion();
+  }, []);
+
+  useEffect(() => {
+    detectUpdate();
+  }, []);
+
+  useEffect(() => {
     if (dark) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
@@ -86,7 +93,6 @@ function App() {
     setDestinationStationList,
     setFormattedTrainList,
     trainList,
-    detectOS,
   ]);
 
   useEffect(() => {
@@ -98,10 +104,6 @@ function App() {
       document.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
-
-  useEffect(() => {
-    detectUpdate();
-  });
 
   return (
     <div
@@ -118,10 +120,9 @@ function App() {
         updateMetadata?.severity === "high" &&
         showWarningDialog && (
           <div className="w-60 h-fit sm:w-80 grid gap-4  dark:bg-zinc-900 shadow-lg p-4 shadow-black  z-50 mt-10 justify-self-center rounded-lg">
-            <X
-              onClick={() => setShowWarningDialog(!showWarningDialog)}
-              className="cursor-pointer text-red-600"
-            />
+            <p onClick={() => setShowWarningDialog(!showWarningDialog)}>
+              <X className="cursor-pointer text-red-600" />
+            </p>
             <h1 className="font-bold text-green-600">
               Application Update Required
             </h1>
@@ -129,7 +130,8 @@ function App() {
               This version of the application is no longer supported. A critical
               update is available.
               <br />
-              Please update to the latest version to continue using the app.
+              Please update to the latest version to continue using the app.{" "}
+              {String(showWarningDialog)}
             </p>
 
             <Button
