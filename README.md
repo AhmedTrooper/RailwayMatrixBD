@@ -1,22 +1,3 @@
-## ⚠️ Important Notice (2025)
-
-**This application is no longer functional for real-world use.**
-
-The official Bangladesh Railway API provider (Shohoz) has implemented Cloudflare Turnstile (CAPTCHA) protection and now requires a valid, per-site API key for all authentication requests. As a result:
-
-- **Open source users cannot log in or use the app** unless they have their own Cloudflare Turnstile sitekey and backend support.
-- The maintainers of the official API have intentionally blocked public/automated access, making this app unusable for its original purpose.
-- This is a decision by the official authority, not by the RailwayMatrixBD project or its contributors.
-
-**If you are an end user:**
-- You will not be able to use this app to check seat availability or book tickets.
-
-**If you are a developer:**
-- You must provide your own Cloudflare Turnstile sitekey and backend, which is not possible for most users.
-
-**This repository remains for educational and reference purposes only.**
-
----
 
 # 🚆 Railway Matrix BD
 
