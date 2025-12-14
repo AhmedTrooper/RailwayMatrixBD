@@ -15,7 +15,7 @@ export default function MenuBar() {
     try {
       await getCurrentWindow().minimize();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -23,7 +23,7 @@ export default function MenuBar() {
     try {
       let screenStatus = await getCurrentWindow().isFullscreen();
       setIsFullScreen(screenStatus);
-      console.log(screenStatus);
+      // console.log(screenStatus);
       if (isFullScreen) {
         await getCurrentWindow().setFullscreen(false);
         setIsFullScreen(false);
@@ -32,7 +32,7 @@ export default function MenuBar() {
         setIsFullScreen(true);
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -40,7 +40,7 @@ export default function MenuBar() {
     try {
       await getCurrentWindow().close();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -51,10 +51,7 @@ export default function MenuBar() {
           onClick={handleWindowClose}
           className="cursor-pointer w-5 text-white"
         />
-        <Minus
-          onClick={hideWindow}
-          className="cursor-pointer w-5 text-white"
-        />
+        <Minus onClick={hideWindow} className="cursor-pointer w-5 text-white" />
         <Maximize2
           onClick={handleFullScreen}
           className="cursor-pointer w-5 text-white"

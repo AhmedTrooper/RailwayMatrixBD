@@ -1,8 +1,8 @@
 [package]
 name = "railwaymatrix"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+version = "0.9.0"
+description = "A cross-platform desktop and mobile application for checking Bangladesh Railway seat availability with intelligent matrix visualization and segmented route finding"
+authors = ["AhmedTrooper"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -24,4 +24,5 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tauri-plugin-os = "2"
 tauri-plugin-http = "2"
+tauri-plugin-clipboard-manager = "2"
 

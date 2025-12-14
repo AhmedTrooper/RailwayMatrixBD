@@ -17,7 +17,7 @@ import { useAuthorizationStore } from "@/store/AuthorizationStore";
 
 export default function TrainForm() {
   const userTrainList = useTrainStore((state) => state.userTrainList);
-  const isLoggedIn = useAuthorizationStore((state) => state.isLoggedIn);
+  const token = useAuthorizationStore((state) => state.token);
 
   const hasTrainBeenSearchedOnce = useTrainStore(
     (state) => state.hasTrainBeenSearchedOnce
@@ -59,7 +59,7 @@ export default function TrainForm() {
         <OriginStationDropDown />
         <DestinationStationDropDown />
         <DatePickerComponent />
-        {isLoggedIn && (
+        {token && (
           <Button
             variant="shadow"
             color="primary"
@@ -72,7 +72,7 @@ export default function TrainForm() {
           </Button>
         )}
 
-        {!isLoggedIn && (
+        {!token && (
           <Button
             variant="shadow"
             color="primary"
@@ -82,7 +82,7 @@ export default function TrainForm() {
             }}
             disabled
           >
-            Login required!
+            UnAuthorized
           </Button>
         )}
       </div>
@@ -97,10 +97,7 @@ export default function TrainForm() {
       {originStation &&
         destinationStation &&
         originStation === destinationStation && (
-          <Alert
-            color="warning"
-            className="sm:col-span-2 w-full sm:w-96"
-          >
+          <Alert color="warning" className="sm:col-span-2 w-full sm:w-96">
             Origin and Destination must be different!
           </Alert>
         )}
@@ -135,7 +132,7 @@ export default function TrainForm() {
               "sm:col-span-2 w-3/5 justify-self-center": userTrainName,
             })}
           >
-            {isLoggedIn && (
+            {token && (
               <Button
                 className="self-center justify-self-center w-32 sm:w-52  p-7 font-bold  bg-red-500 sm:col-span-2"
                 color="primary"
@@ -158,7 +155,7 @@ export default function TrainForm() {
               </Button>
             )}
 
-            {!isLoggedIn && (
+            {!token && (
               <Button
                 className="self-center justify-self-center w-32 sm:w-52  p-7 font-bold  bg-red-500 sm:col-span-2"
                 color="primary"
@@ -178,7 +175,7 @@ export default function TrainForm() {
                 }}
                 disabled
               >
-                Login required!
+                UnAuthorized
               </Button>
             )}
           </div>

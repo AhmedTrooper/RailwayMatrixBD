@@ -1,5 +1,5 @@
 import DummyMatrixBox from "@/components/home/DummyMatrixBox";
-import LoginComponent from "@/components/home/LoginComponent";
+import LoginComponent from "@/components/home/AuthorizationComponent";
 import MatrixBox from "@/components/home/MatrixBox";
 import SegmentedRoute from "@/components/home/SegmentedRoute";
 import TicketNotFound from "@/components/home/TicketNotFound";
@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <div className="p-4  grid justify-items-center gap-2">
-      <LoginComponent/>
+      <LoginComponent />
       <TrainForm />
       {<TrainDetails />}
       {journeyDate && userTrainName && <UserIsReadyToFindTicket />}

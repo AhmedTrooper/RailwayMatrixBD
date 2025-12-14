@@ -53,7 +53,7 @@ export const useApplicationStore = create<ApplicationInformation>(
             onlineVersion &&
             applicationVersion < onlineVersion
           ) {
-            console.log("Update Available!")
+            // console.log("Update Available!")
             setIsUpdateAvailable(true);
             setShowWarningDialog(true);
           }

@@ -28,6 +28,8 @@
           "url": "https://private.tauri.app"
         }
       ]
-    }
+    },
+    "clipboard-manager:default",
+    "clipboard-manager:allow-read-text"
   ]
 }

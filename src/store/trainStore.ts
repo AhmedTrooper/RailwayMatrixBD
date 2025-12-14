@@ -100,17 +100,12 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
       const tempUrl = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${journeyStore.originStation}&to_city=${journeyStore.destinationStation}&date_of_journey=${journeyStore.formattedJourneyDate}&seat_class=SHULOV`;
       let response = await fetch(tempUrl, {
         headers: {
-          Authorization: `Bearer ${authorizationStore.bearerToken}`,
+          "x-device-id": authorizationStore.uudid || "",
+          "x-device-key": authorizationStore.ssdk || "",
+          Authorization: `Bearer ${authorizationStore.token}`,
         },
       });
       if (response.status === 200) {
-        addToast({
-          title: "Request successfull",
-          description: "Request is sent without any error",
-          color: "success",
-          timeout: 200,
-        });
-
         let responseObject = await response.json();
         let trains = responseObject!.data!.trains.map((train: any) =>
           train!.trip_number.trim()
@@ -121,14 +116,14 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
             title: "No train found",
             description: "No train is found in your route.....",
             color: "warning",
-            timeout: 3000,
+            timeout: 100,
           });
         } else {
           addToast({
             title: "Congrats",
             description: "Train is available for this route",
             color: "success",
-            timeout: 3000,
+            timeout: 100,
           });
         }
 
@@ -156,13 +151,7 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
 
   fetchUserTrainInformation: async () => {
     try {
-      addToast({
-        title: "Ticket Request",
-        description: "Request sent successfully",
-        color: "primary",
-        timeout: 300,
-      });
-
+      // Silent request, no toast
       const trainStore = get();
       const journeyStore = useJourneyStore.getState();
       const userTrainModel = trainStore.userTrainModel;
