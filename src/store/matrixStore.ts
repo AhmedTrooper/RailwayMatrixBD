@@ -63,22 +63,17 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
         setTicketFound,
         setTrainData,
         setNumberOfTicketFound,
-        hasSearchedForTicket,
-        showTicketFoundBox,
-        ticketFound,
       } = matrixStore;
 
       setIsLoadingTicketFetching(true);
       setHasSearchedForTicket(true);
       setDummyMatrixVisible(false);
       setShowTicketNotFoundBox(false);
+      setShowTicketFoundBox(false);
       setSegmentedRouteFound(false);
       setSegmentedSeatArray([]);
+      setTicketFound(false);
       matrixStore.setSearchedForSegmentedRoute(false);
-
-      if (hasSearchedForTicket) setHasSearchedForTicket(false);
-      if (showTicketFoundBox) setShowTicketFoundBox(false);
-      if (ticketFound) setTicketFound(false);
 
       const routeList = trainStore.routeList;
       const size = routeList.length;
@@ -88,118 +83,62 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
         Array(size).fill(null)
       );
 
-      // Helper function to add delay
-      const delay = (ms: number) =>
-        new Promise((resolve) => setTimeout(resolve, ms));
-
-      // Process requests in batches to avoid rate limiting
-      const BATCH_SIZE = 3;
-      const DELAY_BETWEEN_BATCHES = 150; // 150ms between batches
-      const DELAY_BETWEEN_REQUESTS = 50; // 50ms between requests in a batch
-
-      const allRequests: Array<{
-        i: number;
-        j: number;
-        from: string;
-        to: string;
-        url: string;
-      }> = [];
+      const fetchTasks: Promise<void>[] = [];
 
       for (let i = 0; i < size - 1; i++) {
         for (let j = i + 1; j < size; j++) {
           const from = routeList[i];
           const to = routeList[j];
+
           const url = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${from}&to_city=${to}&date_of_journey=${journeyStore.formattedJourneyDate}&seat_class=SHULOV`;
-          allRequests.push({ i, j, from, to, url });
-        }
-      }
 
-      // Process in batches
-      for (
-        let batchStart = 0;
-        batchStart < allRequests.length;
-        batchStart += BATCH_SIZE
-      ) {
-        const batch = allRequests.slice(batchStart, batchStart + BATCH_SIZE);
+          const task = (async () => {
+            try {
+              const res = await fetch(url, {
+                headers: {
+                  "x-device-id": authorizationStore.uudid || "",
+                  "x-device-key": authorizationStore.ssdk || "",
+                  Authorization: `Bearer ${authorizationStore.token}`,
+                },
+              });
+              const json = await res.json();
+              const train = json?.data?.trains?.find(
+                (t: any) => t?.trip_number === selectedTrainName
+              );
 
-        const batchPromises = batch.map(
-          async ({ i, j, from, to, url }, index) => {
-            // Stagger requests within batch
-            await delay(index * DELAY_BETWEEN_REQUESTS);
+              const availableSeats = (train?.seat_types || []).filter(
+                (s: any) => s.seat_counts.online + s.seat_counts.offline > 0
+              );
 
-            let retryCount = 0;
-            const MAX_RETRIES = 2;
+              dataMatrix[i][j] = availableSeats;
 
-            while (retryCount <= MAX_RETRIES) {
-              try {
-                const res = await fetch(url, {
-                  headers: {
-                    "x-device-id": authorizationStore.uudid || "",
-                    "x-device-key": authorizationStore.ssdk || "",
-                    Authorization: `Bearer ${authorizationStore.token}`,
-                  },
+              if (availableSeats.length > 0) {
+                setTicketFound(true);
+                ticketNumber++;
+
+                addToast({
+                  title: "Seat Available",
+                  description: `Seats found for route ${from} -> ${to}`,
+                  color: "success",
+                  timeout: 200,
                 });
-
-                if (res.status === 429 || !res.ok) {
-                  if (retryCount < MAX_RETRIES) {
-                    const retryDelay = 1000; // 1000ms for each retry
-                    // Silent retry, no toast to user
-                    await delay(retryDelay);
-                    retryCount++;
-                    continue;
-                  } else {
-                    throw new Error(
-                      `HTTP ${res.status}: ${res.statusText} after ${MAX_RETRIES} retries`
-                    );
-                  }
-                }
-
-                const json = await res.json();
-                const train = json?.data?.trains?.find(
-                  (t: any) => t?.trip_number === selectedTrainName
-                );
-
-                const availableSeats = (train?.seat_types || []).filter(
-                  (s: any) => s.seat_counts.online + s.seat_counts.offline > 0
-                );
-
-                dataMatrix[i][j] = availableSeats;
-
-                if (availableSeats.length > 0) {
-                  setTicketFound(true);
-                  ticketNumber++;
-                  addToast({
-                    title: "Seat Available",
-                    description: `Seats found for route ${from} -> ${to}`,
-                    color: "success",
-                    timeout: 100,
-                  });
-                }
-                break; // Success, exit retry loop
-              } catch (err) {
-                if (retryCount >= MAX_RETRIES) {
-                  // console.error(`Error fetching ${from} -> ${to}:`, err);
-                  addToast({
-                    title: "Failed for this route",
-                    description: `Error fetching ${from} -> ${to} after retries`,
-                    color: "warning",
-                    timeout: 100,
-                  });
-                  break;
-                }
-                retryCount++;
               }
+            } catch (err) {
+              // console.error(`Error fetching ${from} -> ${to}:`, err);
+              addToast({
+                title: "Failed for this route",
+                description: `Error fetching ${from} -> ${to}`,
+                color: "warning",
+                timeout: 200,
+              });
             }
-          }
-        );
+          })();
 
-        await Promise.all(batchPromises);
-
-        // Wait between batches (except after the last batch)
-        if (batchStart + BATCH_SIZE < allRequests.length) {
-          await delay(DELAY_BETWEEN_BATCHES);
+          fetchTasks.push(task);
         }
       }
+
+      await Promise.all(fetchTasks);
 
       setTrainData(dataMatrix);
       setNumberOfTicketFound(ticketNumber);
