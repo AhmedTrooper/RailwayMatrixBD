@@ -3,7 +3,7 @@ import { useTrainStore } from "./trainStore";
 import { SeatType } from "@/interface/store/SeatTypeInterface";
 import { MatrixStore } from "@/interface/store/MatrixStoreInterface";
 import { useJourneyStore } from "./journeyStore";
-import { fetch } from "@tauri-apps/plugin-http";
+import { appFetch as fetch, railwayAuthHeaders } from "@/utils/http";
 import { addToast } from "@heroui/react";
 import { SeatTypeObject } from "@/interface/SeatTypesArray";
 import { isEmpty } from "lodash";
@@ -90,16 +90,12 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
           const from = routeList[i];
           const to = routeList[j];
 
-          const url = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${from}&to_city=${to}&date_of_journey=${journeyStore.formattedJourneyDate}&seat_class=SHULOV`;
+          const url = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${encodeURIComponent(from)}&to_city=${encodeURIComponent(to)}&date_of_journey=${encodeURIComponent(journeyStore.formattedJourneyDate || "")}&seat_class=SHULOV`;
 
           const task = (async () => {
             try {
               const res = await fetch(url, {
-                headers: {
-                  "x-device-id": authorizationStore.uudid || "",
-                  "x-device-key": authorizationStore.ssdk || "",
-                  Authorization: `Bearer ${authorizationStore.token}`,
-                },
+                headers: railwayAuthHeaders(authorizationStore),
               });
               const json = await res.json();
               const train = json?.data?.trains?.find(

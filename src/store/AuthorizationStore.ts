@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import { AuthorizationStoreInterface } from "@/interface/store/AuthorizationStore";
+import { normalizeAuthToken } from "@/utils/http";
 
 const AUTH_STORAGE_KEY = "railwaymatrix_auth";
 
@@ -9,13 +10,14 @@ export const useAuthorizationStore = create<AuthorizationStoreInterface>()(
   persist(
     (set) => ({
       token: null,
-      setToken: (token: string | null) => set({ token }),
+      setToken: (token: string | null) =>
+        set({ token: token ? normalizeAuthToken(token) : null }),
 
       uudid: "",
-      setUUDId: (uudid: string | null) => set({ uudid: uudid ?? "" }),
+      setUUDId: (uudid: string | null) => set({ uudid: uudid?.trim() ?? "" }),
 
       ssdk: null,
-      setSSDK: (ssdk: string | null) => set({ ssdk }),
+      setSSDK: (ssdk: string | null) => set({ ssdk: ssdk?.trim() || null }),
 
       resetAuthData: () => set({ token: null, uudid: "", ssdk: null }),
     }),

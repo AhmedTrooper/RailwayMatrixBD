@@ -18,6 +18,9 @@ import { useAuthorizationStore } from "@/store/AuthorizationStore";
 export default function TrainForm() {
   const userTrainList = useTrainStore((state) => state.userTrainList);
   const token = useAuthorizationStore((state) => state.token);
+  const ssdk = useAuthorizationStore((state) => state.ssdk);
+  const uudid = useAuthorizationStore((state) => state.uudid);
+  const isAuthorized = Boolean(token && ssdk && uudid);
 
   const hasTrainBeenSearchedOnce = useTrainStore(
     (state) => state.hasTrainBeenSearchedOnce
@@ -59,7 +62,7 @@ export default function TrainForm() {
         <OriginStationDropDown />
         <DestinationStationDropDown />
         <DatePickerComponent />
-        {token && (
+        {isAuthorized && (
           <Button
             variant="shadow"
             color="primary"
@@ -72,14 +75,11 @@ export default function TrainForm() {
           </Button>
         )}
 
-        {!token && (
+        {!isAuthorized && (
           <Button
             variant="shadow"
             color="primary"
             className="p-7 font-bold w-2/3 "
-            onPress={() => {
-              validateAndFetchTrain();
-            }}
             disabled
           >
             UnAuthorized
@@ -132,7 +132,7 @@ export default function TrainForm() {
               "sm:col-span-2 w-3/5 justify-self-center": userTrainName,
             })}
           >
-            {token && (
+            {isAuthorized && (
               <Button
                 className="self-center justify-self-center w-32 sm:w-52  p-7 font-bold  bg-red-500 sm:col-span-2"
                 color="primary"
@@ -155,24 +155,10 @@ export default function TrainForm() {
               </Button>
             )}
 
-            {!token && (
+            {!isAuthorized && (
               <Button
                 className="self-center justify-self-center w-32 sm:w-52  p-7 font-bold  bg-red-500 sm:col-span-2"
                 color="primary"
-                onPress={() => {
-                  setShowProperJourneyInformationAlert(false);
-
-                  if (userTrainName && journeyDate) {
-                    fetchUserTrainInformation();
-                  } else {
-                    addToast({
-                      title: "Date or Train Name error",
-                      description: `Make sure you set both journey date and train name correctly...`,
-                      color: "danger",
-                      timeout: 3000,
-                    });
-                  }
-                }}
                 disabled
               >
                 UnAuthorized

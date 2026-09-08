@@ -116,7 +116,9 @@ function App() {
     >
       {!isMobileOS && <MenuBar />}
       {isMobileOS && <MobileMenuBar />}
-      {isUpdateAvailable &&
+      {typeof window !== "undefined" &&
+        "__TAURI_INTERNALS__" in window &&
+        isUpdateAvailable &&
         updateMetadata?.severity === "high" &&
         showWarningDialog && (
           <div className="w-60 h-fit sm:w-80 grid gap-4  dark:bg-zinc-900 shadow-lg p-4 shadow-black  z-50 mt-10 justify-self-center rounded-lg">

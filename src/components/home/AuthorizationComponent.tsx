@@ -1,6 +1,6 @@
 import { useAuthorizationStore } from "@/store/AuthorizationStore";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { Button, Input } from "@heroui/react";
+import { Alert, Button, Input } from "@heroui/react";
 import { readText } from "@tauri-apps/plugin-clipboard-manager";
 import { ClipboardPaste, Trash2 } from "lucide-react";
 
@@ -15,7 +15,10 @@ export default function AuthorizationComponent() {
 
   const handlePaste = async (setter: (value: string) => void) => {
     try {
-      const text = await readText();
+      const text =
+        typeof readText === "function"
+          ? await readText()
+          : await navigator.clipboard.readText();
       if (text) {
         setter(text);
       }
@@ -78,21 +81,28 @@ export default function AuthorizationComponent() {
             }
           />
 
+          {!(token && ssdk && uudid) && (
+            <Alert color="warning" variant="bordered">
+              Token, SSDK (x-device-key), and UUDID (x-device-id) are all
+              required. Copy them from eticket.railway.gov.bd local storage.
+            </Alert>
+          )}
+
           <div
             style={{ marginTop: 12 }}
             className="text-xs text-gray-500 space-y-1"
           >
             <div>
               <span className="font-semibold">Token:</span>{" "}
-              {token ? `${token.substring(0, 10)}...` : "(not set)"}
+              {token ? "(set)" : "(not set)"}
             </div>
             <div>
               <span className="font-semibold">SSDK:</span>{" "}
-              {ssdk ? `${ssdk.substring(0, 10)}...` : "(not set)"}
+              {ssdk ? "(set)" : "(not set)"}
             </div>
             <div>
               <span className="font-semibold">UUDID:</span>{" "}
-              {uudid ? `${uudid.substring(0, 10)}...` : "(not set)"}
+              {uudid ? "(set)" : "(not set)"}
             </div>
           </div>
 

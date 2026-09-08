@@ -4,9 +4,8 @@ import {
 } from "@/interface/userTrainRouteInformation";
 import { create } from "zustand";
 import { useJourneyStore } from "./journeyStore";
-import { fetch } from "@tauri-apps/plugin-http";
+import { appFetch as fetch, railwayAuthHeaders } from "@/utils/http";
 import { addToast } from "@heroui/react";
-import isOnline from "is-online";
 import { isEmpty } from "lodash";
 import { TrainInformation } from "@/interface/TrainInfo";
 import { useAuthorizationStore } from "./AuthorizationStore";
@@ -97,13 +96,9 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
     try {
       const journeyStore = useJourneyStore.getState();
       const authorizationStore = useAuthorizationStore.getState();
-      const tempUrl = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${journeyStore.originStation}&to_city=${journeyStore.destinationStation}&date_of_journey=${journeyStore.formattedJourneyDate}&seat_class=SHULOV`;
+      const tempUrl = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${encodeURIComponent(journeyStore.originStation || "")}&to_city=${encodeURIComponent(journeyStore.destinationStation || "")}&date_of_journey=${encodeURIComponent(journeyStore.formattedJourneyDate || "")}&seat_class=SHULOV`;
       let response = await fetch(tempUrl, {
-        headers: {
-          "x-device-id": authorizationStore.uudid || "",
-          "x-device-key": authorizationStore.ssdk || "",
-          Authorization: `Bearer ${authorizationStore.token}`,
-        },
+        headers: railwayAuthHeaders(authorizationStore),
       });
       if (response.status === 200) {
         let responseObject = await response.json();
@@ -131,9 +126,12 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
       } else {
         addToast({
           title: "Request not successfull",
-          description: "Request is not sent to server",
+          description:
+            response.status === 401
+              ? "401 Unauthorized. Re-copy a fresh token, x-device-key, and x-device-id from eticket.railway.gov.bd after login."
+              : `Server returned ${response.status}. Check token/SSDK/UUDID.`,
           color: "danger",
-          timeout: 300,
+          timeout: 6000,
         });
       }
     } catch (e: any) {
@@ -199,21 +197,13 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
         });
       }
     } catch (error) {
-      if (!(await isOnline())) {
-        addToast({
-          title: "Check Internet connection",
-          description: "Check if internet connection is ok...",
-          color: "danger",
-          timeout: 1000,
-        });
-      } else {
-        addToast({
-          title: "Error occurred",
-          description: "Try again...",
-          color: "danger",
-          timeout: 300,
-        });
-      }
+      addToast({
+        title: "Error occurred",
+        description:
+          error instanceof Error ? error.message : "Try again...",
+        color: "danger",
+        timeout: 3000,
+      });
     }
   },
   extractTrainModel: (train: string) => {
@@ -248,12 +238,23 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
       return;
     }
 
+    if (!originStation || !destinationStation) {
+      addToast({
+        title: "Station Error",
+        description: "Select both origin and destination stations",
+        color: "warning",
+        timeout: 3000,
+      });
+
+      return;
+    }
+
     if (originStation === destinationStation) {
       addToast({
         title: "Station Error",
         description: `Origin Station and Destination station can't be same....`,
         color: "warning",
-        timeout: 1000,
+        timeout: 3000,
       });
 
       return;
@@ -265,12 +266,12 @@ export const useTrainStore = create<UserTrainStore>((set, get) => ({
     setShowProperJourneyInformationAlert(!isJourneyInfoValid);
     setIsReadyToFetchUserTrainList(isJourneyInfoValid);
 
-    if (!(await isOnline())) {
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
       addToast({
         title: "Internet Error",
         description: `Check if internet connection is ok`,
         color: "danger",
-        timeout: 1000,
+        timeout: 3000,
       });
 
       return;

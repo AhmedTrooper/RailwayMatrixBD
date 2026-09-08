@@ -10,18 +10,25 @@ export default function DestinationStationDropDown() {
   const setDestinationStation = useJourneyStore(
     (state) => state.setDestinationStation
   );
+  const selectedKey = items.find(
+    (item) => item.label === destinationStation
+  )?.key;
+
   return (
     <Autocomplete
       label={destinationStation ? destinationStation : "Destination Station"}
-      onChange={() => setDestinationStation(null)}
+      selectedKey={selectedKey === undefined ? null : String(selectedKey)}
+      onSelectionChange={(key) => {
+        if (key === null) {
+          setDestinationStation(null);
+          return;
+        }
+        const selected = items.find((item) => String(item.key) === String(key));
+        setDestinationStation(selected ? String(selected.label) : null);
+      }}
     >
       {items.map((item) => (
-        <AutocompleteItem
-          key={item.key}
-          onPress={() => setDestinationStation(item.label as string)}
-        >
-          {item.label}
-        </AutocompleteItem>
+        <AutocompleteItem key={String(item.key)}>{item.label}</AutocompleteItem>
       ))}
     </Autocomplete>
   );

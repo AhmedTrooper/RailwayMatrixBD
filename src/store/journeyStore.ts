@@ -74,9 +74,11 @@ export const useJourneyStore = create<JourneyState>((set, get) => ({
   ],
   journeyDateGenerator: (date: DateValue | null) => {
     if (!date) return;
-    const tempDate = `${date.year}-${date.month}-${date.day}`;
+    const paddedDay = String(date.day).padStart(2, "0");
+    const paddedMonth = String(date.month).padStart(2, "0");
+    const tempDate = `${date.year}-${paddedMonth}-${paddedDay}`;
     const { monthList } = get();
-    const tempFormatedDate = `${date.day}-${monthList[date.month - 1]}-${
+    const tempFormatedDate = `${paddedDay}-${monthList[date.month - 1]}-${
       date.year
     }`;
     set({ formattedJourneyDate: tempFormatedDate, journeyDate: tempDate });
