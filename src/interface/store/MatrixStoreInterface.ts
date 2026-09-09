@@ -40,4 +40,13 @@ export interface MatrixStore {
   setSegmentedRouteFound: (srf: boolean) => void;
   searchedForSegmentedRoute: boolean;
   setSearchedForSegmentedRoute: (status: boolean) => void;
+  matrixProgress: {
+    current: number;
+    total: number;
+    from: string;
+    to: string;
+  } | null;
+  setMatrixProgress: (
+    progress: MatrixStore["matrixProgress"]
+  ) => void;
 }

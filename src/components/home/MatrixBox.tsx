@@ -14,6 +14,7 @@ export default function MatrixBox() {
   const isLoading = useMatrixStore((state) => state.isLoadingTicketFetching);
   const trainData = useMatrixStore((state) => state.trainData);
   const ticketFound = useMatrixStore((state) => state.ticketFound);
+  const matrixProgress = useMatrixStore((state) => state.matrixProgress);
 
   useEffect(() => {
     if (!isEmpty(routeList)) {
@@ -24,9 +25,17 @@ export default function MatrixBox() {
   return (
     <div className="p-2 md:p-4 max-w-[85vw] mx-auto cursor-pointer">
       {isLoading ? (
-        <div className="text-center py-6 text-gray-500 flex items-center justify-center gap-2">
-          <Spinner />
-          Loading ticket availability...
+        <div className="text-center py-6 text-gray-500 grid justify-items-center gap-2">
+          <div className="flex items-center justify-center gap-2">
+            <Spinner />
+            Checking seats slowly to avoid account block...
+          </div>
+          {matrixProgress && (
+            <p className="text-sm">
+              {matrixProgress.current}/{matrixProgress.total}:{" "}
+              {matrixProgress.from} → {matrixProgress.to}
+            </p>
+          )}
         </div>
       ) : trainData.length > 0 && ticketFound ? (
         <div className="overflow-x-auto max-h-[80vh] dark:bg-zinc-900 rounded shadow border dark:border-zinc-700">
