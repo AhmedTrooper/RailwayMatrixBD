@@ -3,11 +3,19 @@ import { useTrainStore } from "./trainStore";
 import { SeatType } from "@/interface/store/SeatTypeInterface";
 import { MatrixStore } from "@/interface/store/MatrixStoreInterface";
 import { useJourneyStore } from "./journeyStore";
-import { fetch } from "@tauri-apps/plugin-http";
+import { appFetch as fetch, railwayAuthHeaders } from "@/utils/http";
 import { addToast } from "@heroui/react";
 import { SeatTypeObject } from "@/interface/SeatTypesArray";
 import { isEmpty } from "lodash";
 import { useAuthorizationStore } from "./AuthorizationStore";
+
+const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+const humanPauseMs = (): number => 2000 + Math.floor(Math.random() * 1500);
+
+const shouldStopForStatus = (status: number): boolean =>
+  status === 401 || status === 403 || status === 429;
 
 export const useMatrixStore = create<MatrixStore>((set, get) => ({
   segmentedRouteFound: true,
@@ -43,6 +51,8 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
   dummyMatrixVisible: true,
   setDummyMatrixVisible: (status: boolean) =>
     set({ dummyMatrixVisible: status }),
+  matrixProgress: null,
+  setMatrixProgress: (progress) => set({ matrixProgress: progress }),
 
   createMatrix: async () => {
     try {
@@ -63,6 +73,7 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
         setTicketFound,
         setTrainData,
         setNumberOfTicketFound,
+        setMatrixProgress,
       } = matrixStore;
 
       setIsLoadingTicketFetching(true);
@@ -78,72 +89,115 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
       const routeList = trainStore.routeList;
       const size = routeList.length;
       const selectedTrainName = trainStore.userTrainName;
+      const originStation = journeyStore.originStation;
+      const destinationStation = journeyStore.destinationStation;
 
       const dataMatrix: SeatType[][] = Array.from({ length: size }, () =>
         Array(size).fill(null)
       );
 
-      const fetchTasks: Promise<void>[] = [];
-
+      const pairs: Array<{ i: number; j: number; from: string; to: string }> =
+        [];
       for (let i = 0; i < size - 1; i++) {
         for (let j = i + 1; j < size; j++) {
-          const from = routeList[i];
-          const to = routeList[j];
-
-          const url = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${from}&to_city=${to}&date_of_journey=${journeyStore.formattedJourneyDate}&seat_class=SHULOV`;
-
-          const task = (async () => {
-            try {
-              const res = await fetch(url, {
-                headers: {
-                  "x-device-id": authorizationStore.uudid || "",
-                  "x-device-key": authorizationStore.ssdk || "",
-                  Authorization: `Bearer ${authorizationStore.token}`,
-                },
-              });
-              const json = await res.json();
-              const train = json?.data?.trains?.find(
-                (t: any) => t?.trip_number === selectedTrainName
-              );
-
-              const availableSeats = (train?.seat_types || []).filter(
-                (s: any) => s.seat_counts.online + s.seat_counts.offline > 0
-              );
-
-              dataMatrix[i][j] = availableSeats;
-
-              if (availableSeats.length > 0) {
-                setTicketFound(true);
-                ticketNumber++;
-
-                addToast({
-                  title: "Seat Available",
-                  description: `Seats found for route ${from} -> ${to}`,
-                  color: "success",
-                  timeout: 200,
-                });
-              }
-            } catch (err) {
-              // console.error(`Error fetching ${from} -> ${to}:`, err);
-              addToast({
-                title: "Failed for this route",
-                description: `Error fetching ${from} -> ${to}`,
-                color: "warning",
-                timeout: 200,
-              });
-            }
-          })();
-
-          fetchTasks.push(task);
+          pairs.push({
+            i,
+            j,
+            from: routeList[i],
+            to: routeList[j],
+          });
         }
       }
 
-      await Promise.all(fetchTasks);
+      const preferredIndex = pairs.findIndex(
+        (pair) =>
+          pair.from === originStation && pair.to === destinationStation
+      );
+      if (preferredIndex > 0) {
+        const [preferredPair] = pairs.splice(preferredIndex, 1);
+        pairs.unshift(preferredPair);
+      }
+
+      let stoppedEarly = false;
+
+      for (let index = 0; index < pairs.length; index++) {
+        const { i, j, from, to } = pairs[index];
+        setMatrixProgress({
+          current: index + 1,
+          total: pairs.length,
+          from,
+          to,
+        });
+
+        const url = `https://railspaapi.shohoz.com/v1.0/web/bookings/search-trips-v2?from_city=${encodeURIComponent(from)}&to_city=${encodeURIComponent(to)}&date_of_journey=${encodeURIComponent(journeyStore.formattedJourneyDate || "")}&seat_class=SHULOV`;
+
+        try {
+          const res = await fetch(url, {
+            headers: railwayAuthHeaders(authorizationStore),
+          });
+
+          if (shouldStopForStatus(res.status)) {
+            stoppedEarly = true;
+            addToast({
+              title: "Stopped to protect account",
+              description:
+                res.status === 429
+                  ? "Railway rate-limited the search. Try again later."
+                  : "Auth failed. Refresh token/SSDK/UUDID and try again.",
+              color: "danger",
+              timeout: 6000,
+            });
+            break;
+          }
+
+          if (res.status !== 200) {
+            addToast({
+              title: "Route skipped",
+              description: `${from} -> ${to} returned ${res.status}`,
+              color: "warning",
+              timeout: 1500,
+            });
+          } else {
+            const json = await res.json();
+            const train = json?.data?.trains?.find(
+              (t: any) => t?.trip_number === selectedTrainName
+            );
+
+            const availableSeats = (train?.seat_types || []).filter(
+              (s: any) => s.seat_counts.online + s.seat_counts.offline > 0
+            );
+
+            dataMatrix[i][j] = availableSeats;
+            setTrainData(dataMatrix.map((row) => [...row]));
+
+            if (availableSeats.length > 0) {
+              setTicketFound(true);
+              ticketNumber++;
+              addToast({
+                title: "Seat Available",
+                description: `Seats found for route ${from} -> ${to}`,
+                color: "success",
+                timeout: 2000,
+              });
+            }
+          }
+        } catch {
+          addToast({
+            title: "Failed for this route",
+            description: `Error fetching ${from} -> ${to}`,
+            color: "warning",
+            timeout: 1500,
+          });
+        }
+
+        if (index < pairs.length - 1 && !stoppedEarly) {
+          await sleep(humanPauseMs());
+        }
+      }
 
       setTrainData(dataMatrix);
       setNumberOfTicketFound(ticketNumber);
     } catch (e) {
-      // console.error("Matrix fetch error:", e);
       addToast({
         title: "Total fetching error",
         description: `Error to fetch matrix...`,
@@ -153,6 +207,7 @@ export const useMatrixStore = create<MatrixStore>((set, get) => ({
     } finally {
       const matrixStore = useMatrixStore.getState();
       matrixStore.setIsLoadingTicketFetching(false);
+      matrixStore.setMatrixProgress(null);
 
       if (!matrixStore.ticketFound) {
         matrixStore.setDummyMatrixVisible(true);

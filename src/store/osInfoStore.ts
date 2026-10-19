@@ -15,14 +15,17 @@ const useOsInfoStore = create<OsInfoState>((set) => ({
   setOSName: (os) => set({ osName: os }),
   setIsMobileOS: (status) => set({ isMobileOS: status }),
   detectMobileOS: () => {
-  const currentOS = platform();
-  set({ osName: currentOS });
-  if (currentOS === "android" || currentOS === "ios") {
-    set({ isMobileOS: true });
-  } else {
-    set({ isMobileOS: false });
-  }
-},
+    try {
+      if (typeof platform !== "function") throw new Error("not tauri");
+      const currentOS = platform();
+      set({ osName: currentOS });
+      set({ isMobileOS: currentOS === "android" || currentOS === "ios" });
+    } catch {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobileOS = /android|iphone|ipad|mobile/.test(userAgent);
+      set({ osName: isMobileOS ? "android" : "macos", isMobileOS });
+    }
+  },
 }));
 
 export default useOsInfoStore;

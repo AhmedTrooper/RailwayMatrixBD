@@ -1,7 +1,7 @@
 import { Metadata } from "@/interface/MetaData";
 import { ApplicationInformation } from "@/interface/store/ApplicationStore";
 import { addToast } from "@heroui/react";
-import { fetch } from "@tauri-apps/plugin-http";
+import { appFetch as fetch } from "@/utils/http";
 import { create } from "zustand";
 import { getVersion } from "@tauri-apps/api/app";
 
@@ -72,15 +72,12 @@ export const useApplicationStore = create<ApplicationInformation>(
       try {
         const ApplicationStore = get();
         const setApplicationVersion = ApplicationStore.setApplicationVersion;
-        const appVersion = await getVersion();
+        const appVersion =
+          typeof getVersion === "function" ? await getVersion() : "0.1.0";
         setApplicationVersion(appVersion);
       } catch (e) {
-        addToast({
-          title: "Version Error",
-          description: "Application version information retrival failed!",
-          color: "danger",
-          timeout: 500,
-        });
+        const ApplicationStore = get();
+        ApplicationStore.setApplicationVersion("0.1.0");
       }
     },
     showWarningDialog: false,

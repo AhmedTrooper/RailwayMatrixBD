@@ -8,7 +8,11 @@ export default function MenuBar() {
   const [isFullScreen, setIsFullScreen] = useState<boolean | null>(null);
   const navigate = useNavigate();
   const startDraggingWindow = async () => {
-    await getCurrentWindow().startDragging();
+    try {
+      await getCurrentWindow().startDragging();
+    } catch {
+      // Browser has no native window drag.
+    }
   };
 
   const hideWindow = async () => {

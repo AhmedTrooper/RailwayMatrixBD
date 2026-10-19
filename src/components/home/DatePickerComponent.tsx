@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useJourneyStore } from "@/store/journeyStore";
 import { DatePicker, DateValue } from "@heroui/react";
 import { getLocalTimeZone, today } from "@internationalized/date";
@@ -8,6 +9,15 @@ export default function DatePickerComponent() {
   );
   const pickedDate = useJourneyStore((state) => state.pickedDate);
   const setPickedDate = useJourneyStore((state) => state.setPickedDate);
+  const journeyDate = useJourneyStore((state) => state.journeyDate);
+
+  useEffect(() => {
+    if (journeyDate) return;
+    const currentDate = today(getLocalTimeZone());
+    journeyDateGenerator(currentDate);
+    setPickedDate(currentDate);
+  }, [journeyDate, journeyDateGenerator, setPickedDate]);
+
   return (
     <DatePicker
       className="max-w-full"
