@@ -101,7 +101,7 @@ Commit message rules live in [COMMIT_RULES.md](COMMIT_RULES.md): one-line headli
 
 ### Releases
 
-Maintainers only: bump the version in `apps/desktop/src-tauri/tauri.conf.json`, merge to `main`, then push a matching tag (`v0.9.0`). The tag runs the release workflow, which builds and signs the bundles, generates `.sig` files and `latest.json`, and opens a draft GitHub release.
+Maintainers only: bump the version in `apps/desktop/src-tauri/tauri.conf.json`, merge to `main`, then push a matching tag (`v0.9.1`). The tag runs the release workflow, which builds and signs the bundles, generates `.sig` files and `latest.json`, and opens a draft GitHub release.
 
 ## Acknowledgements
 

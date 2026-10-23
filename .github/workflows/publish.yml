@@ -3,7 +3,7 @@ name: "publish"
 on:
   push:
     tags:
-      - "v*" # runs on version tags like v0.9.0 (must match the version in tauri.conf.json)
+      - "v*" # runs on version tags like v0.9.1 (must match the version in tauri.conf.json)
 
 # Builds the app for all platforms, signs the updater packages (.sig files
 # are generated during the build because the signing key secrets are set),
@@ -60,7 +60,7 @@ jobs:
           projectPath: apps/desktop # app no longer lives at the repo root
           tauriScript: bun tauri
           uploadUpdaterSignatures: true
-          tagName: v__VERSION__ # resolved from tauri.conf.json, e.g. v0.9.0 - push the same tag to trigger
+          tagName: v__VERSION__ # resolved from tauri.conf.json, e.g. v0.9.1 - push the same tag to trigger
           releaseName: "Railway Matrix BD v__VERSION__"
           releaseBody: "See the assets to download and install this version."
           releaseDraft: true
