@@ -2,10 +2,13 @@ APP_DIR := apps/desktop
 TAURI_DIR := apps/desktop/src-tauri
 
 .DEFAULT_GOAL := help
-.PHONY: tauri-dev tauri-android-dev tauri-build tauri-android-build build lint fmt clippy check add help
+.PHONY: install tauri-dev tauri-android-dev tauri-build tauri-android-build build lint fmt clippy check add help
 
 help: ## show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*## "}{printf "  %-22s %s\n", $$1, $$2}'
+
+install: ## bun install (apps/desktop)
+	cd $(APP_DIR) && bun install
 
 tauri-dev: ## bun run tauri dev (desktop dev loop)
 	cd $(APP_DIR) && bun run tauri dev
