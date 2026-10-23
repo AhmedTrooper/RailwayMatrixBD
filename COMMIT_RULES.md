@@ -27,7 +27,17 @@ Co-authored-by: SomeAgent <noreply@agents.example>
 
 ## Pre-commit rule
 
-Before any commit, run:
+Before anything else, inspect the real changes — `git status` alone is not enough:
+
+```sh
+git status
+git diff            # unstaged content
+git diff --staged   # what will actually be committed
+```
+
+Read the diff content, not just the file names. The commit message, what gets staged, and whether it should be split into several commits are decided from what the diff actually does.
+
+Then run:
 
 ```sh
 make build lint fmt clippy check
