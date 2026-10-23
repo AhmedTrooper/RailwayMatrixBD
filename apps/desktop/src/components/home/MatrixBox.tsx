@@ -23,7 +23,7 @@ export default function MatrixBox() {
   }, [routeList]);
 
   return (
-    <div className="p-2 md:p-4 max-w-[85vw] mx-auto cursor-pointer">
+    <div className="w-full min-w-0 cursor-pointer md:p-2">
       {isLoading ? (
         <div className="text-center py-6 text-gray-500 grid justify-items-center gap-2">
           <div className="flex items-center justify-center gap-2">
@@ -38,7 +38,7 @@ export default function MatrixBox() {
           )}
         </div>
       ) : trainData.length > 0 && ticketFound ? (
-        <div className="overflow-x-auto max-h-[80vh] dark:bg-zinc-900 rounded shadow border dark:border-zinc-700">
+        <div className="overflow-x-auto max-h-[75vh] dark:bg-zinc-900 rounded shadow border dark:border-zinc-700">
           <table className="min-w-full table-auto border-collapse dark:bg-zinc-900">
             <thead>
               <tr>

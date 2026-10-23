@@ -30,18 +30,23 @@ export default function Home() {
   useEffect(() => {}, [hasSearchedForTicket]);
 
   return (
-    <div className="p-4  grid justify-items-center gap-2">
-      <LoginComponent />
-      <TrainForm />
-      {<TrainDetails />}
-      {journeyDate && userTrainName && <UserIsReadyToFindTicket />}
-
-      {showTicketNotFoundBox && <TicketNotFound />}
-      {dummyMatrixVisible && <DummyMatrixBox />}
-      {showTicketFoundBox && <TicketNumber />}
-      {!isEmpty(routeList) && showTicketFoundBox && <SegmentedRoute />}
-
-      {<MatrixBox />}
+    <div className="mx-auto grid w-full max-w-7xl justify-items-center gap-4 p-4 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)] md:items-start lg:grid-cols-[380px_minmax(0,1fr)]">
+      <div className="grid w-full content-start gap-3">
+        <LoginComponent />
+      </div>
+      <div className="grid w-full min-w-0 content-start gap-3">
+        <TrainForm />
+        {journeyDate && userTrainName && <UserIsReadyToFindTicket />}
+        {showTicketNotFoundBox && <TicketNotFound />}
+        {showTicketFoundBox && <TicketNumber />}
+        {!isEmpty(routeList) && showTicketFoundBox && <SegmentedRoute />}
+        <TrainDetails />
+      </div>
+      {/* the ticket matrix is wide, so it gets its own full-width row */}
+      <div className="grid w-full min-w-0 content-start gap-3 md:col-span-2">
+        {dummyMatrixVisible && <DummyMatrixBox />}
+        {<MatrixBox />}
+      </div>
     </div>
   );
 }

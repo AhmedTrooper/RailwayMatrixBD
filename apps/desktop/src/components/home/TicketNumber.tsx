@@ -8,7 +8,7 @@ export default function TicketNumber() {
   );
   useEffect(() => {}, [numberOfTicketFound]);
   return (
-    <div className="w-60 grid items-center justify-items-center mt-4 mb-4 sm:w-96">
+    <div className="w-full grid items-center justify-items-center mt-2">
       <Alert color="success">
         Ticket found for : {numberOfTicketFound} routes
       </Alert>

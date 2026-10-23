@@ -57,8 +57,8 @@ export default function TrainForm() {
   );
 
   return (
-    <div className="grid justify-items-center sm:grid-cols-2  gap-2 h-fit md:w-3/5">
-      <div className="trip-plan-form grid justify-items-center sm:w-96 sm:col-span-2 sm:grid-cols-2  gap-2 h-fit">
+    <div className="grid w-full justify-items-center gap-2 h-fit sm:grid-cols-2">
+      <div className="trip-plan-form grid w-full justify-items-stretch gap-2 h-fit sm:col-span-2 sm:grid-cols-2">
         <OriginStationDropDown />
         <DestinationStationDropDown />
         <DatePickerComponent />
@@ -66,7 +66,7 @@ export default function TrainForm() {
           <Button
             variant="shadow"
             color="primary"
-            className="p-7 font-bold w-2/3 "
+            className="p-7 font-bold w-full"
             onPress={() => {
               validateAndFetchTrain();
             }}
@@ -79,7 +79,7 @@ export default function TrainForm() {
           <Button
             variant="shadow"
             color="primary"
-            className="p-7 font-bold w-2/3 "
+            className="p-7 font-bold w-full"
             disabled
           >
             UnAuthorized
@@ -97,7 +97,7 @@ export default function TrainForm() {
       {originStation &&
         destinationStation &&
         originStation === destinationStation && (
-          <Alert color="warning" className="sm:col-span-2 w-full sm:w-96">
+          <Alert color="warning" className="sm:col-span-2 w-full">
             Origin and Destination must be different!
           </Alert>
         )}
@@ -111,14 +111,14 @@ export default function TrainForm() {
 
       {userTrainName && !journeyDate && <OnlyTrainSelectionError />}
 
-      <div className="mt-4 gap-4 w-full sm:w-96 grid sm:grid-cols-2 sm:col-span-2">
+      <div className="mt-2 gap-3 w-full grid sm:grid-cols-2 sm:col-span-2">
         <MannualTrainSelection />
         <div className="sm:col-span-2">
           <DatePickerComponent />
         </div>
       </div>
 
-      <div className={clsx("grid mt-4 gap-4 sm:col-span-2  w-60 sm:w-96", {})}>
+      <div className="grid mt-2 gap-3 sm:col-span-2 w-full">
         {!userTrainName && (
           <Alert color="success">
             Select your train from this dropdown menu if you haven't found one

@@ -10,7 +10,7 @@ export default function RouteInformation() {
   const trainRouteInformationListLength = userTrainRouteInformationList.length;
 
   return (
-    <div className="grid gap-5 w-60 sm:w-96 justify-self-center max-h-[60vh] overflow-auto p-4">
+    <div className="grid gap-3 w-full max-h-[60vh] overflow-auto p-2 lg:grid-cols-2 xl:grid-cols-3">
       {userTrainRouteInformationList.map((route, index) => (
         <div
           key={index}

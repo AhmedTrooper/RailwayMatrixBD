@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 
 export default function TicketNotFound() {
   return (
-    <div className="w-60  mt-4 sm:w-96">
+    <div className="w-full mt-2">
       <Alert
         color="danger"
         className="flex items-center gap-2"

@@ -1,7 +1,7 @@
 import { Alert } from "@heroui/alert";
 export default function ProperJourneyInformationAlert() {
   return (
-    <div className="sm:col-span-2 mt-5 gap-2 grid sm:grid-cols-2">
+    <div className="sm:col-span-2 mt-2 gap-2 grid w-full sm:grid-cols-2">
       <Alert
         variant="bordered"
         color="warning"

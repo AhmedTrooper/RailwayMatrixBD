@@ -25,7 +25,7 @@ export default function SegmentedRoute() {
   useMatrixStore((state) => state.showTicketFoundBox);
 
   return (
-    <div className="segmented-route w-66 sm:w-96 sm:grid-cols-2 grid p-4  justify-items-center  rounded-md  gap-4 mt-4 mb-4">
+    <div className="segmented-route grid w-full grid-cols-1 sm:grid-cols-2 justify-items-stretch rounded-md gap-3 p-4 mt-2">
       <h1 className="text-blue-600 font-bold text-xl text-center sm:col-span-2">
         Check Ticket Availability
       </h1>
@@ -33,7 +33,7 @@ export default function SegmentedRoute() {
       {!isEmpty(routeList) && <SegmentedDestinationStationDropdown />}
       <Button
         color="primary"
-        className="p-5 w-40 h-18 font-bold sm:col-span-2"
+        className="p-5 w-40 h-18 font-bold justify-self-center sm:col-span-2"
         onPress={() => segmentedRouteFinder()}
       >
         Check Availability

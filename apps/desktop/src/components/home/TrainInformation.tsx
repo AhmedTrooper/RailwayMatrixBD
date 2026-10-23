@@ -16,8 +16,8 @@ export default function TrainInformation() {
   }, [trainInformaton]);
 
   return (
-    <div className="w-60 sm:w-96   grid justify-items-center items-center content-center justify-self-center ">
-      <Card className="w-full sm:w-96">
+    <div className="w-full grid justify-items-center items-center content-center">
+      <Card className="w-full">
         <CardHeader>{trainInformaton?.train_name}</CardHeader>
 
         {(!isEmpty(trainInformaton!.days) || !isEmpty(offDays)) && (

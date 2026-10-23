@@ -29,7 +29,7 @@ export default function AuthorizationComponent() {
 
   return (
     <div>
-      <Card className="w-full sm:w-96">
+      <Card className="w-full">
         <CardHeader>Fill the form</CardHeader>
         <CardBody className="grid gap-4">
           <Input
