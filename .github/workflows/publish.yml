@@ -2,11 +2,12 @@ name: "publish"
 
 on:
   push:
-    branches:
-      - release
+    tags:
+      - "v*" # runs on version tags like v0.9.0 (must match the version in tauri.conf.json)
 
-# This is the example from the readme.
-# On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
+# Builds the app for all platforms, signs the updater packages (.sig files
+# are generated during the build because the signing key secrets are set),
+# then creates a draft GitHub release with installers + latest.json (official updater).
 
 jobs:
   publish-tauri:
@@ -20,7 +21,7 @@ jobs:
             args: "--target aarch64-apple-darwin"
           - platform: "macos-latest" # for Intel based macs.
             args: "--target x86_64-apple-darwin"
-          - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
+          - platform: "ubuntu-22.04"
             args: ""
           - platform: "windows-latest"
             args: ""
@@ -29,10 +30,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -41,23 +40,29 @@ jobs:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
-        # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
-        # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xdg-utils
 
       - name: install frontend dependencies
-        run: yarn install # change this to npm, pnpm or bun depending on which one you use.
+        working-directory: apps/desktop
+        run: bun install
 
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # updater signing - private key stays in repo secrets, the public key lives in tauri.conf.json
+          # with these set, tauri build writes .sig files next to the bundles and the action uploads them
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: "App v__VERSION__"
-          releaseBody: "See the assets to download this version and install."
+          projectPath: apps/desktop # app no longer lives at the repo root
+          tauriScript: bun tauri
+          uploadUpdaterSignatures: true
+          tagName: v__VERSION__ # resolved from tauri.conf.json, e.g. v0.9.0 - push the same tag to trigger
+          releaseName: "Railway Matrix BD v__VERSION__"
+          releaseBody: "See the assets to download and install this version."
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}

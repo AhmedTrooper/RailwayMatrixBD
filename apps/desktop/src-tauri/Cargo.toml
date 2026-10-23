@@ -31,3 +31,8 @@ tauri-plugin-os = "2.3.0"
 tauri-plugin-http = "2.5.0"
 # Updated to full patch version (assuming you are using 2.0.0 on the JS side)
 tauri-plugin-clipboard-manager = "2.0.0"
+# restarts the app after an update is installed (using 2.0.0+ on the JS side)
+tauri-plugin-process = "2"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2"

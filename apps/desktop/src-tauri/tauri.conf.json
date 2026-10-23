@@ -4,9 +4,9 @@
   "version": "0.9.0",
   "identifier": "com.railway-matrix-sutsoa.app",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "bun run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "bun run build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -38,6 +38,15 @@
     ],
     "android": {
       "versionCode": 9
+    },
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/AhmedTrooper/RailwayMatrixBD/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZDMDc1MzA1OEFGNjI2NjgKUldSb0p2YUtCVk1IL0dnZ1JpNXlCeERaa09ueENJS2U3WlFhTHJqd3FlSU5SRVY5ZU9mQ1hlYlEK"
     }
   }
 }
